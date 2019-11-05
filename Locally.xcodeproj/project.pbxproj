@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		894665572371785F00932E43 /* AuoFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894665562371785F00932E43 /* AuoFocusTextField.swift */; };
 		898C0346236B29360044E0D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0345236B29360044E0D5 /* AppDelegate.swift */; };
 		898C0348236B29360044E0D5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0347236B29360044E0D5 /* SceneDelegate.swift */; };
 		898C034B236B29370044E0D5 /* Locally.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 898C0349236B29370044E0D5 /* Locally.xcdatamodeld */; };
@@ -14,9 +15,16 @@
 		898C034F236B293B0044E0D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 898C034E236B293B0044E0D5 /* Assets.xcassets */; };
 		898C0352236B293B0044E0D5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 898C0351236B293B0044E0D5 /* Preview Assets.xcassets */; };
 		898C0355236B293B0044E0D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 898C0353236B293B0044E0D5 /* LaunchScreen.storyboard */; };
+		898C035F236B2AA50044E0D5 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 898C035E236B2AA50044E0D5 /* CloudKit.framework */; };
+		898C0363236B2ECC0044E0D5 /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0362236B2ECC0044E0D5 /* Locations.swift */; };
+		898C0365236B2F060044E0D5 /* LocationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0364236B2F060044E0D5 /* LocationItem.swift */; };
+		898C0367236B2FEC0044E0D5 /* AddLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0366236B2FEC0044E0D5 /* AddLocation.swift */; };
+		898C0369236B32590044E0D5 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0368236B32590044E0D5 /* MapView.swift */; };
+		898C036B236C3FDA0044E0D5 /* CurrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C036A236C3FDA0044E0D5 /* CurrentLocation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		894665562371785F00932E43 /* AuoFocusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuoFocusTextField.swift; sourceTree = "<group>"; };
 		898C0342236B29360044E0D5 /* Locally.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Locally.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		898C0345236B29360044E0D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		898C0347236B29360044E0D5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -26,6 +34,13 @@
 		898C0351236B293B0044E0D5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		898C0354236B293B0044E0D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		898C0356236B293B0044E0D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		898C035C236B2AA10044E0D5 /* Locally.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Locally.entitlements; sourceTree = "<group>"; };
+		898C035E236B2AA50044E0D5 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		898C0362236B2ECC0044E0D5 /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
+		898C0364236B2F060044E0D5 /* LocationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationItem.swift; sourceTree = "<group>"; };
+		898C0366236B2FEC0044E0D5 /* AddLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocation.swift; sourceTree = "<group>"; };
+		898C0368236B32590044E0D5 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		898C036A236C3FDA0044E0D5 /* CurrentLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				898C035F236B2AA50044E0D5 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +60,7 @@
 			children = (
 				898C0344236B29360044E0D5 /* Locally */,
 				898C0343236B29360044E0D5 /* Products */,
+				898C035D236B2AA50044E0D5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -59,8 +76,10 @@
 			isa = PBXGroup;
 			children = (
 				898C0345236B29360044E0D5 /* AppDelegate.swift */,
+				898C0361236B2E980044E0D5 /* Views */,
+				898C0360236B2E920044E0D5 /* Model */,
+				898C035C236B2AA10044E0D5 /* Locally.entitlements */,
 				898C0347236B29360044E0D5 /* SceneDelegate.swift */,
-				898C034C236B29370044E0D5 /* ContentView.swift */,
 				898C034E236B293B0044E0D5 /* Assets.xcassets */,
 				898C0353236B293B0044E0D5 /* LaunchScreen.storyboard */,
 				898C0356236B293B0044E0D5 /* Info.plist */,
@@ -76,6 +95,35 @@
 				898C0351236B293B0044E0D5 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		898C035D236B2AA50044E0D5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				898C035E236B2AA50044E0D5 /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		898C0360236B2E920044E0D5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				898C0362236B2ECC0044E0D5 /* Locations.swift */,
+				898C0364236B2F060044E0D5 /* LocationItem.swift */,
+				898C036A236C3FDA0044E0D5 /* CurrentLocation.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		898C0361236B2E980044E0D5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				898C034C236B29370044E0D5 /* ContentView.swift */,
+				898C0366236B2FEC0044E0D5 /* AddLocation.swift */,
+				898C0368236B32590044E0D5 /* MapView.swift */,
+				894665562371785F00932E43 /* AuoFocusTextField.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,9 +198,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				898C034B236B29370044E0D5 /* Locally.xcdatamodeld in Sources */,
+				898C0369236B32590044E0D5 /* MapView.swift in Sources */,
+				894665572371785F00932E43 /* AuoFocusTextField.swift in Sources */,
 				898C0346236B29360044E0D5 /* AppDelegate.swift in Sources */,
+				898C036B236C3FDA0044E0D5 /* CurrentLocation.swift in Sources */,
 				898C034D236B29370044E0D5 /* ContentView.swift in Sources */,
+				898C0365236B2F060044E0D5 /* LocationItem.swift in Sources */,
+				898C0363236B2ECC0044E0D5 /* Locations.swift in Sources */,
 				898C0348236B29360044E0D5 /* SceneDelegate.swift in Sources */,
+				898C0367236B2FEC0044E0D5 /* AddLocation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,6 +342,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Locally/Locally.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Locally/Preview Content\"";
 				DEVELOPMENT_TEAM = V7S7GB28P7;
@@ -300,7 +355,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = dev.leonte.Locally;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -308,6 +363,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Locally/Locally.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Locally/Preview Content\"";
 				DEVELOPMENT_TEAM = V7S7GB28P7;
@@ -320,7 +376,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = dev.leonte.Locally;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
