@@ -9,13 +9,6 @@
 import Foundation
 
 class Locations: ObservableObject {
-    
-    @Published var latitude: Double = 0
-    @Published var longitude: Double = 0
-    @Published var date: Date = Date()
-    @Published var dateString: String = ""
-    @Published var description: String = ""
-    
     @Published var items = [LocationItem]() {
         didSet {
             let encoder = JSONEncoder()

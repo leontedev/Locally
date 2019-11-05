@@ -8,27 +8,15 @@
 
 import UIKit
 import CoreData
-import CoreLocation
-import Contacts
 
-
-var currentLocation: CurrentLocation? = nil
     
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    static let geoCoder = CLGeocoder()
-    let locationManager = CLLocationManager()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.delegate = self
-        //locationManager.startMonitoringVisits()
-        
-        locationManager.startUpdatingLocation()
         
         return true
     }
@@ -92,27 +80,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 }
-
-extension AppDelegate: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else { return }
-        //manager.stopUpdatingLocation()
-    
-        AppDelegate.geoCoder.reverseGeocodeLocation(location) { placemarks, _ in
-            if let place = placemarks?.first {
-                //let description = "\(place)"
-                
-                //FIXME: Remove country & city names
-                
-                let postalAddressFormatter = CNPostalAddressFormatter()
-                postalAddressFormatter.style = .mailingAddress
-                
-                if let postalAddress = place.postalAddress {
-                    let addressString = postalAddressFormatter.string(from: postalAddress)
-                    currentLocation = CurrentLocation(location.coordinate, date: Date(), descriptionString: addressString)
-                }
-            }
-        }
-    }
-}
-

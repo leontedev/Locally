@@ -7,9 +7,12 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct AddLocation: View {
     @ObservedObject var locations: Locations
+    @ObservedObject var location: LocationManager
+    
     @Environment(\.presentationMode) var presentationMode
     
     @State private var name = ""
@@ -21,22 +24,22 @@ struct AddLocation: View {
                 //TextField("Name", text: $name)
                 AutoFocusTextField(text: $name)
                 
-                Text("\(locations.description)")
+                Text(location.lastKnownDescription ?? "Unknown")
                     .font(.caption)
                     .foregroundColor(Color.gray)
-                    
                 
-                //Text("Lat: \(locations.latitude), Long: \(locations.longitude)")
+                Text("Lat: \(Double(location.lastKnownLocation?.coordinate.latitude ?? 0)), Long: \(Double(location.lastKnownLocation?.coordinate.longitude ?? 0))")
+                    .font(.caption)
+                    .foregroundColor(Color.gray)
             }
             .navigationBarTitle("Add Locally")
             .navigationBarItems(trailing: Button("Save") {
                 if self.name != "" {
                     let item = LocationItem(name: self.name,
-                                            latitude: self.locations.latitude,
-                                            longitude: self.locations.longitude,
-                                            date: self.locations.date,
-                                            dateString: self.locations.dateString,
-                                            description: self.locations.description)
+                                            latitude: Double(self.location.lastKnownLocation?.coordinate.latitude ?? 0),
+                                            longitude: Double(self.location.lastKnownLocation?.coordinate.longitude ?? 0),
+                                            date: Date(),
+                                            description: self.location.lastKnownDescription ?? "Unknown")
                     self.locations.items.append(item)
                     self.name = ""
                     self.presentationMode.wrappedValue.dismiss()

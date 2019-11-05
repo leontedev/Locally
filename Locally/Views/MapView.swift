@@ -11,40 +11,34 @@ import MapKit
 import CoreLocation
 
 struct MapView: UIViewRepresentable {
+    @Binding var location: CLLocation?
     
     func makeUIView(context: Context) -> MKMapView {
         MKMapView(frame: .zero)
     }
     
     func updateUIView(_ view: MKMapView, context: Context) {
+        //guard let newLocation = location.lastKnownLocation else { return }
+        guard let newLocation = location else { return }
         
-        let observer = NotificationCenter.default.addObserver(
-            forName: Notification.Name("newLocationSaved"),
-            object: nil,
-            queue: nil) { notification in
-                if let location = notification.userInfo?["location"] as? CurrentLocation {
-                    
-                    // Zoom in on the current location
-                    let coordinate = CLLocationCoordinate2D(latitude: location.latitude,
-                                                            longitude: location.longitude)
-                    let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
-                    let region = MKCoordinateRegion(center: coordinate, span: span)
-                    view.setRegion(region, animated: true)
-                    
-                    // Drop a pin at the current location
-                    let myAnnotation = MKPointAnnotation()
-                    myAnnotation.coordinate = CLLocationCoordinate2DMake(location.latitude, location.longitude);
-                    myAnnotation.title = "Current location"
-                    view.addAnnotation(myAnnotation)
-                }
-        }
+        // convert CLLocation to CLLocationCoordinate2D
+        let coordinate = newLocation.coordinate
+        let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        view.setRegion(region, animated: true)
+        
+        // Drop a pin at the current location
+        let myAnnotation = MKPointAnnotation()
+        myAnnotation.coordinate = newLocation.coordinate
+        myAnnotation.title = "Current location"
+        view.addAnnotation(myAnnotation)
     }
     
 }
 
 
-struct MapView_Previews: PreviewProvider {
-    static var previews: some View {
-        MapView()
-    }
-}
+//struct MapView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MapView()
+//    }
+//}
