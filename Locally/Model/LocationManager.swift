@@ -14,10 +14,15 @@ import Contacts
 
 class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     private let manager: CLLocationManager
-    private let geoCoder = CLGeocoder()
+    
 
     @Published var lastKnownLocation: CLLocation?
     @Published var lastKnownDescription: String?
+    
+    @Published var isUsingCurrentLocation = true
+    // When the user pans the map OR long presses to add a "Custom Location" Marker the Current Location button is enabled
+    @Published var isEnabledCurrentLocationButton = false
+    
 
     init(manager: CLLocationManager = CLLocationManager()) {
         self.manager = manager
@@ -35,14 +40,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         //print("lastKnownLocation \(lastKnownLocation)")
         
         if let location = lastKnownLocation {
-            geoCoder.reverseGeocodeLocation(location) { placemarks, _ in
-                if let place = placemarks?.first {
-                    let postalAddressFormatter = CNPostalAddressFormatter()
-                    postalAddressFormatter.style = .mailingAddress
-                    if let postalAddress = place.postalAddress {
-                        self.lastKnownDescription = postalAddressFormatter.string(from: postalAddress)
-                    }
-                }
+            LocationManager.retrievePostalAddress(from: location) { postalAddress in
+                self.lastKnownDescription = postalAddress
             }
         }
     }
@@ -50,6 +49,25 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
             manager.startUpdatingLocation()
+        }
+    }
+}
+
+extension LocationManager {
+    static func retrievePostalAddress(from location: CLLocation, completionHandler: @escaping (_ postalAddress: String) -> Void) {
+        let geoCoder = CLGeocoder()
+        
+        geoCoder.reverseGeocodeLocation(location) { placemarks, _ in
+            if let place = placemarks?.first {
+                let postalAddressFormatter = CNPostalAddressFormatter()
+                postalAddressFormatter.style = .mailingAddress
+                if let postalAddress = place.postalAddress {
+                    let stringAddress = postalAddressFormatter.string(from: postalAddress)
+                    completionHandler(stringAddress)
+                }
+            } else {
+                completionHandler("")
+            }
         }
     }
 }

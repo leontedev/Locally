@@ -8,104 +8,120 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
+    @State var showOnboardingView = true
+    
     @ObservedObject var locationManager = LocationManager()
     @ObservedObject var locations = Locations()
+    @ObservedObject var settings = Settings()
     
     @State private var showAddSheet = false
     @State private var showSettingsSheet = false
     @State private var type = 0
-    private let googleMapsTypes = ["driving", "transit", "walking"]
-    private let appleMapsTypes = ["d", "r", "w"]
+    
     
     func removeItems(at offsets: IndexSet) {
         locations.items.remove(atOffsets: offsets)
     }
     
+    
     var body: some View {
-            VStack {
-                ZStack {
-                    MapView(location: $locationManager.lastKnownLocation)
-                        .frame(height: 350)
-                    VStack {
-                        Spacer().frame(height: 20)
-                        
-                        HStack {
+
+        
+        return VStack {
+            if showOnboardingView {
+                OnboardingView()
+                    .onTapGesture {
+                        self.showOnboardingView = false
+                    }
+            } else {
+                VStack {
+                        ZStack {
+                            MapView(location: $locationManager.lastKnownLocation)
+                                .frame(height: 350)
+                                //.gesture(longPress)
+                                //.simultaneousGesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
+                                //.onEnded { print("Changed \($0.location)") })
+                            
                             SettingsButton(showSheet: $showSettingsSheet)
                                 .sheet(isPresented: $showSettingsSheet, content: {
-                                    SettingsView() })
-                            
-                            Spacer()
-                        }
-                        
-                        Spacer().frame(height: 160)
+                                    SettingsView(settings: self.settings) })
+                                .offset(x: -148, y: -115)
+                                .shadow(radius: 6)
 
-                        HStack {
-                            Spacer()
+                            
                             AddButton(showSheet: $showAddSheet)
                                 .sheet(isPresented: $showAddSheet, content: {
                                     AddLocation(locations: self.locations, location: self.locationManager) })
+                                .offset(x: 110, y: 125)
+                                .shadow(radius: 6)
                         }
-                    }
-                }
-                
-                Divider()
-                
-                Picker("Type", selection: $type) {
-                    Image(systemName: "car.fill").tag(0)
-                    Image(systemName: "tram.fill").tag(1)
-                    Image(systemName: "person.fill").tag(2)
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding(.leading, 10)
-                .padding(.trailing, 10)
-                .accentColor(Color.init("TextAccentColor"))
-                
-                List {
-                    ForEach(self.locations.items) { item in
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(item.name)
-                                    .font(.headline)
-                                    .padding(.leading, 15)
-                                    .foregroundColor(Color.init("TextNameColor"))
-                                Text(item.description)
-                                    .font(.caption)
-                                    .foregroundColor(Color.gray)
-                                    .padding(.leading, 15)
-                            }
-                            
-                            Spacer()
-
-                            NavigationButton(name: "Google Maps",
-                                             urlString: "comgooglemaps://?daddr=\(item.latitude),\(item.longitude)&directionsmode=\(self.googleMapsTypes[self.type])")
-                            
-                            NavigationButton(name: "Apple Maps",
-                                             urlString: "http://maps.apple.com/?daddr=\(item.latitude),\(item.longitude)&dirflg=\(self.appleMapsTypes[self.type])")
-                            
-                        }
-                        .padding(5)
-                        .background(Color.init("CellColor"))
-                        .cornerRadius(16)
-                        .clipped()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 16)
-                                .stroke(Color.blue, lineWidth: 0.2)
-                        )
                         
+                        Divider()
+                        // If only Waze is displayed - don't display the Picker (as it's not available)
+                        if (settings.isEnabledAppleMaps || settings.isEnabledGoogleMaps) {
+                            Picker("Type", selection: $settings.transitType) {
+                                Image(systemName: "car.fill").tag(0)
+                                Image(systemName: "tram.fill").tag(1)
+                                Image(systemName: "person.fill").tag(2)
+                            }
+                            .pickerStyle(SegmentedPickerStyle())
+                            .padding(.leading, 10)
+                            .padding(.trailing, 10)
+                            .accentColor(Color.init("TextAccentColor"))
+                        }
+                        
+                        List {
+                            ForEach(self.locations.items) { item in
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text(item.name)
+                                            .font(.headline)
+                                            .padding(.leading, 15)
+                                            .foregroundColor(Color.init("TextNameColor"))
+                                        Text(item.description)
+                                            .font(.caption)
+                                            .foregroundColor(Color.gray)
+                                            .padding(.leading, 15)
+                                    }
+                                    
+                                    Spacer()
+                                    
+                                    NavigationMenu(settings: self.settings, item: item)
+                                }
+                                .padding(5)
+                                .background(Color.init("CellColor"))
+                                .cornerRadius(16)
+                                .clipped()
+                                .shadow(radius: 1)
+    //                        .overlay(
+    //                            RoundedRectangle(cornerRadius: 16)
+    //                                .stroke(Color.blue, lineWidth: 0.2)
+    //                        )
+                                
+                            }
+                            .onDelete(perform: removeItems)
+                            .buttonStyle(PlainButtonStyle())
+                            
+                        }
                     }
-                    .onDelete(perform: removeItems)
-                    .buttonStyle(PlainButtonStyle())
-                    
-                }
+                    .onAppear {
+                        print("settings.isEnabledGoogleMaps \(self.settings.isEnabledGoogleMaps)")
+                        print("settings.isEnabledAppleMaps \(self.settings.isEnabledAppleMaps)")
+                        print("settings.isEnabledWaze \(self.settings.isEnabledWaze)")
+                        
+                        self.locationManager.startUpdating()
+                        // To remove only extra separators below the list:
+                        UITableView.appearance().tableFooterView = UIView()
+                        // To remove all separators including the actual ones:
+                        UITableView.appearance().separatorStyle = .none
+                        //UINavigationBar.appearance().backgroundColor = UIColor(named: "TextNameColor")
+                        //UINavigationBar.appearance().titleTextAttributes = [.foregroundColor : UIColor(named: "TextNameColor")]
+                    }.edgesIgnoringSafeArea(.all)
             }
-            .onAppear {
-                self.locationManager.startUpdating()
-                // To remove only extra separators below the list:
-                UITableView.appearance().tableFooterView = UIView()
-                // To remove all separators including the actual ones:
-                UITableView.appearance().separatorStyle = .none
-            }.edgesIgnoringSafeArea(.all)
+        }
+        
     }
 }
 
@@ -153,9 +169,36 @@ struct SettingsButton: View {
     }
 }
 
+struct NavigationMenu: View {
+    @ObservedObject var settings: Settings
+    var item: LocationItem
+    
+    private let googleMapsTypes = ["driving", "transit", "walking"]
+    private let appleMapsTypes = ["d", "r", "w"]
+    private let buttonLabels = ["Go", "Google Maps", "Apple Maps", "Waze"]
+    
+
+    @ViewBuilder var body: some View {
+        HStack {
+            if settings.isEnabledGoogleMaps {
+                NavigationButton(name: (settings.isEnabledAppleMaps || settings.isEnabledWaze) ? buttonLabels[1] : buttonLabels[0], urlString: "comgooglemaps://?daddr=\(item.latitude),\(item.longitude)&directionsmode=\(self.googleMapsTypes[self.settings.transitType])")
+                
+            }
+            if settings.isEnabledAppleMaps {
+                NavigationButton(name: (settings.isEnabledGoogleMaps || settings.isEnabledWaze) ? buttonLabels[2] : buttonLabels[0], urlString: "http://maps.apple.com/?daddr=\(item.latitude),\(item.longitude)&dirflg=\(self.appleMapsTypes[self.settings.transitType])")
+            }
+            if settings.isEnabledWaze {
+                NavigationButton(name: (settings.isEnabledAppleMaps || settings.isEnabledGoogleMaps) ? buttonLabels[3] : buttonLabels[0], urlString: "waze://?ll=\(item.latitude),\(item.longitude)&navigate=yes&zoom=17")
+            }
+        }
+        
+    }
+}
+
 struct NavigationButton: View {
     var name: String
     var urlString: String
+    
     
     var body: some View {
         Button(action: {

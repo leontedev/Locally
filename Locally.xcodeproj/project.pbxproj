@@ -10,6 +10,7 @@
 		894665572371785F00932E43 /* AuoFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894665562371785F00932E43 /* AuoFocusTextField.swift */; };
 		8946655923719AEA00932E43 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946655823719AEA00932E43 /* LocationManager.swift */; };
 		8946655B2371C7E100932E43 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946655A2371C7E100932E43 /* SettingsView.swift */; };
+		8946655D2371D28F00932E43 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946655C2371D28F00932E43 /* Settings.swift */; };
 		898C0346236B29360044E0D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0345236B29360044E0D5 /* AppDelegate.swift */; };
 		898C0348236B29360044E0D5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0347236B29360044E0D5 /* SceneDelegate.swift */; };
 		898C034B236B29370044E0D5 /* Locally.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 898C0349236B29370044E0D5 /* Locally.xcdatamodeld */; };
@@ -22,12 +23,14 @@
 		898C0365236B2F060044E0D5 /* LocationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0364236B2F060044E0D5 /* LocationItem.swift */; };
 		898C0367236B2FEC0044E0D5 /* AddLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0366236B2FEC0044E0D5 /* AddLocation.swift */; };
 		898C0369236B32590044E0D5 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0368236B32590044E0D5 /* MapView.swift */; };
+		89AE98852375B7B6007B6C04 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89AE98842375B7B6007B6C04 /* OnboardingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		894665562371785F00932E43 /* AuoFocusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuoFocusTextField.swift; sourceTree = "<group>"; };
 		8946655823719AEA00932E43 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		8946655A2371C7E100932E43 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		8946655C2371D28F00932E43 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		898C0342236B29360044E0D5 /* Locally.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Locally.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		898C0345236B29360044E0D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		898C0347236B29360044E0D5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +46,7 @@
 		898C0364236B2F060044E0D5 /* LocationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationItem.swift; sourceTree = "<group>"; };
 		898C0366236B2FEC0044E0D5 /* AddLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocation.swift; sourceTree = "<group>"; };
 		898C0368236B32590044E0D5 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		89AE98842375B7B6007B6C04 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,7 @@
 				8946655823719AEA00932E43 /* LocationManager.swift */,
 				898C0364236B2F060044E0D5 /* LocationItem.swift */,
 				898C0362236B2ECC0044E0D5 /* Locations.swift */,
+				8946655C2371D28F00932E43 /* Settings.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -120,11 +125,12 @@
 		898C0361236B2E980044E0D5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				898C0368236B32590044E0D5 /* MapView.swift */,
 				898C034C236B29370044E0D5 /* ContentView.swift */,
+				898C0368236B32590044E0D5 /* MapView.swift */,
 				898C0366236B2FEC0044E0D5 /* AddLocation.swift */,
 				8946655A2371C7E100932E43 /* SettingsView.swift */,
 				894665562371785F00932E43 /* AuoFocusTextField.swift */,
+				89AE98842375B7B6007B6C04 /* OnboardingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -206,6 +212,8 @@
 				8946655923719AEA00932E43 /* LocationManager.swift in Sources */,
 				898C0346236B29360044E0D5 /* AppDelegate.swift in Sources */,
 				898C034D236B29370044E0D5 /* ContentView.swift in Sources */,
+				8946655D2371D28F00932E43 /* Settings.swift in Sources */,
+				89AE98852375B7B6007B6C04 /* OnboardingView.swift in Sources */,
 				898C0365236B2F060044E0D5 /* LocationItem.swift in Sources */,
 				898C0363236B2ECC0044E0D5 /* Locations.swift in Sources */,
 				898C0348236B29360044E0D5 /* SceneDelegate.swift in Sources */,

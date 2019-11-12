@@ -32,7 +32,7 @@ struct AddLocation: View {
                     .font(.caption)
                     .foregroundColor(Color.gray)
             }
-            .navigationBarTitle("Add Locally")
+            .navigationBarTitle("Save Locally")
             .navigationBarItems(trailing: Button("Save") {
                 if self.name != "" {
                     let item = LocationItem(name: self.name,

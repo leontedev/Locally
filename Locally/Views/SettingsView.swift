@@ -9,28 +9,29 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var isEnabledGoogleMaps = true
-    @State private var isEnabledAppleMaps = true
-    @State private var isEnabledWaze = false
+    @ObservedObject var settings: Settings
     @Environment(\.presentationMode) var presentationMode
-    
+
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Enable only the Navigation apps you plan to use.")) {
-                    Toggle(isOn: $isEnabledGoogleMaps) {
-                        Text("Google Maps")
-                    }.padding()
+                    if (UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!)) {
+                        Toggle(isOn: $settings.isEnabledGoogleMaps) {
+                            Text("Google Maps")
+                        }.padding()
+                    }
                     
-                    Toggle(isOn: $isEnabledAppleMaps) {
+                    Toggle(isOn: $settings.isEnabledAppleMaps) {
                         Text("Apple Maps")
                     }.padding()
                     
-                    Toggle(isOn: $isEnabledWaze) {
-                        Text("Waze")
-                    }.padding()
+                    if (UIApplication.shared.canOpenURL(URL(string: "waze://")!)) {
+                        Toggle(isOn: $settings.isEnabledWaze) {
+                            Text("Waze")
+                        }.padding()
+                    }
                 }
-                
             }
             .navigationBarTitle("Settings")
             .navigationBarItems(trailing: Button("Close") {
@@ -40,8 +41,8 @@ struct SettingsView: View {
     }
 }
 
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-    }
-}
+//struct SettingsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SettingsView()
+//    }
+//}
