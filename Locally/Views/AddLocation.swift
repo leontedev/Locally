@@ -24,23 +24,34 @@ struct AddLocation: View {
                 //TextField("Name", text: $name)
                 AutoFocusTextField(text: $name)
                 
-                Text(location.lastKnownDescription ?? "Unknown")
+                Text(location.shouldEnableCurrentLocationButton ? location.lastKnownCustomDescription ?? "" : location.lastKnownDescription ?? "")
                     .font(.caption)
                     .foregroundColor(Color.gray)
                 
-                Text("Lat: \(Double(location.lastKnownLocation?.coordinate.latitude ?? 0)), Long: \(Double(location.lastKnownLocation?.coordinate.longitude ?? 0))")
+                Text("Lat: \(location.shouldEnableCurrentLocationButton ? Double(location.lastKnownCustomLocation?.coordinate.latitude ?? 0) : Double(location.lastKnownLocation?.coordinate.latitude ?? 0)), Long: \(location.shouldEnableCurrentLocationButton ? Double(location.lastKnownCustomLocation?.coordinate.longitude ?? 0) : Double(location.lastKnownLocation?.coordinate.longitude ?? 0))")
                     .font(.caption)
                     .foregroundColor(Color.gray)
             }
             .navigationBarTitle("Save Locally")
             .navigationBarItems(trailing: Button("Save") {
                 if self.name != "" {
-                    let item = LocationItem(name: self.name,
-                                            latitude: Double(self.location.lastKnownLocation?.coordinate.latitude ?? 0),
-                                            longitude: Double(self.location.lastKnownLocation?.coordinate.longitude ?? 0),
-                                            date: Date(),
-                                            description: self.location.lastKnownDescription ?? "Unknown")
-                    self.locations.items.append(item)
+                    
+                    if self.location.shouldEnableCurrentLocationButton {
+                        let item = LocationItem(name: self.name,
+                                                latitude: Double(self.location.lastKnownCustomLocation?.coordinate.latitude ?? 0),
+                                                longitude: Double(self.location.lastKnownCustomLocation?.coordinate.longitude ?? 0),
+                                                date: Date(),
+                                                description: self.location.lastKnownCustomDescription ?? "Unknown")
+                        self.locations.items.append(item)
+                    } else {
+                        let item = LocationItem(name: self.name,
+                                                latitude: Double(self.location.lastKnownLocation?.coordinate.latitude ?? 0),
+                                                longitude: Double(self.location.lastKnownLocation?.coordinate.longitude ?? 0),
+                                                date: Date(),
+                                                description: self.location.lastKnownDescription ?? "Unknown")
+                        self.locations.items.append(item)
+                    }
+                    
                     self.name = ""
                     self.presentationMode.wrappedValue.dismiss()
                 } else {

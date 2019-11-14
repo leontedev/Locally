@@ -9,6 +9,15 @@
 import Foundation
 
 class Settings: ObservableObject {
+    @Published var showOnboardingView: Bool = true {
+        didSet {
+            let encoder = JSONEncoder()
+            if let data = try? encoder.encode(showOnboardingView) {
+                UserDefaults.standard.set(data, forKey: "showOnboardingView")
+            }
+        }
+    }
+    
     @Published var isEnabledGoogleMaps: Bool = false {
         didSet {
             let encoder = JSONEncoder()
@@ -50,6 +59,12 @@ class Settings: ObservableObject {
     
     init() {
         let decoder = JSONDecoder()
+        
+        if let data = UserDefaults.standard.data(forKey: "showOnboardingView") {
+            if let decodedData = try? decoder.decode(Bool.self, from: data) {
+                showOnboardingView = decodedData
+            }
+        }
         
         if let data = UserDefaults.standard.data(forKey: "isEnabledGoogleMaps") {
             if let decodedData = try? decoder.decode(Bool.self, from: data) {

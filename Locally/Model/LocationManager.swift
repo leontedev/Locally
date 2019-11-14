@@ -15,14 +15,16 @@ import Contacts
 class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     private let manager: CLLocationManager
     
-
+    // Current GPS Location
     @Published var lastKnownLocation: CLLocation?
     @Published var lastKnownDescription: String?
     
-    @Published var isUsingCurrentLocation = true
     // When the user pans the map OR long presses to add a "Custom Location" Marker the Current Location button is enabled
-    @Published var isEnabledCurrentLocationButton = false
+    @Published var shouldEnableCurrentLocationButton = false
     
+    // (when the above is true) Custom Location selected on the map will be used
+    @Published var lastKnownCustomLocation: CLLocation?
+    @Published var lastKnownCustomDescription: String?
 
     init(manager: CLLocationManager = CLLocationManager()) {
         self.manager = manager
@@ -33,17 +35,20 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         self.manager.delegate = self
         self.manager.requestWhenInUseAuthorization()
         self.manager.startUpdatingLocation()
+        print("startUpdating")
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         lastKnownLocation = locations.last
-        //print("lastKnownLocation \(lastKnownLocation)")
+        print("didUpdateLocations \(lastKnownLocation)")
         
         if let location = lastKnownLocation {
             LocationManager.retrievePostalAddress(from: location) { postalAddress in
                 self.lastKnownDescription = postalAddress
             }
         }
+        
+        self.manager.stopUpdatingLocation()
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

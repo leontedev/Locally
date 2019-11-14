@@ -10,8 +10,6 @@ import SwiftUI
 
 
 struct ContentView: View {
-    @State var showOnboardingView = true
-    
     @ObservedObject var locationManager = LocationManager()
     @ObservedObject var locations = Locations()
     @ObservedObject var settings = Settings()
@@ -20,41 +18,74 @@ struct ContentView: View {
     @State private var showSettingsSheet = false
     @State private var type = 0
     
-    
     func removeItems(at offsets: IndexSet) {
         locations.items.remove(atOffsets: offsets)
     }
     
-    
     var body: some View {
 
-        
         return VStack {
-            if showOnboardingView {
+            if settings.showOnboardingView {
                 OnboardingView()
                     .onTapGesture {
-                        self.showOnboardingView = false
+                        self.settings.showOnboardingView = false
                     }
             } else {
                 VStack {
                         ZStack {
-                            MapView(location: $locationManager.lastKnownLocation)
+                            // MARK: MapView
+                            MapView(locationManager: locationManager, location: $locationManager.lastKnownLocation)
                                 .frame(height: 350)
                                 //.gesture(longPress)
                                 //.simultaneousGesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
                                 //.onEnded { print("Changed \($0.location)") })
+                    
                             
-                            SettingsButton(showSheet: $showSettingsSheet)
-                                .sheet(isPresented: $showSettingsSheet, content: {
-                                    SettingsView(settings: self.settings) })
-                                .offset(x: -148, y: -115)
+                            if locationManager.shouldEnableCurrentLocationButton {
+                                VStack(spacing: 0) {
+                                    Button(action: {
+                                        self.showSettingsSheet = true
+                                    }) {
+                                        Image(systemName: "gear").font(Font.body.weight(.heavy))
+                                    }
+                                    .sheet(isPresented: $showSettingsSheet, content: {
+                                        SettingsView(settings: self.settings) })
+                                    .accentColor(Color.init("TextAccentColor"))
+                                    .frame(width: 50, height: 50)
+                                    .background(Color.init("ButtonColor"))
+                                    
+                                    Rectangle()
+                                        .foregroundColor(Color.init("TextAccentColor"))
+                                        .frame(width:50, height:2)
+                                        .fixedSize()
+                                        
+                                    
+                                    Button(action: {
+                                        self.locationManager.startUpdating()
+                                        self.locationManager.shouldEnableCurrentLocationButton = false
+                                    }) {
+                                        Image(systemName: "location.north.fill").font(Font.body.weight(.heavy))
+                                    }
+                                    .accentColor(Color.init("TextAccentColor"))
+                                    .frame(width: 50, height: 50)
+                                    .background(Color.init("ButtonColor"))
+                                }
+                                .cornerRadius(10)
+                                .offset(x: -150, y: -92)
                                 .shadow(radius: 6)
-
+                            } else {
+                                SettingsButton(showSheet: $showSettingsSheet)
+                                    .sheet(isPresented: $showSettingsSheet, content: {
+                                        SettingsView(settings: self.settings) })
+                                    .offset(x: -150, y: -115)
+                                    .shadow(radius: 6)
+                            }
                             
+                            // MARK: Save button
                             AddButton(showSheet: $showAddSheet)
                                 .sheet(isPresented: $showAddSheet, content: {
                                     AddLocation(locations: self.locations, location: self.locationManager) })
-                                .offset(x: 110, y: 125)
+                                .offset(x: 120, y: 125)
                                 .shadow(radius: 6)
                         }
                         
@@ -106,11 +137,7 @@ struct ContentView: View {
                             
                         }
                     }
-                    .onAppear {
-                        print("settings.isEnabledGoogleMaps \(self.settings.isEnabledGoogleMaps)")
-                        print("settings.isEnabledAppleMaps \(self.settings.isEnabledAppleMaps)")
-                        print("settings.isEnabledWaze \(self.settings.isEnabledWaze)")
-                        
+                    .onAppear {                        
                         self.locationManager.startUpdating()
                         // To remove only extra separators below the list:
                         UITableView.appearance().tableFooterView = UIView()
@@ -144,7 +171,7 @@ struct AddButton: View {
             }
         }
         .accentColor(Color.init("TextAccentColor"))
-        .frame(minWidth: 0, maxWidth: 100)
+        .frame(minWidth: 0, maxWidth: 80)
         .padding()
         .background(Color.init("ButtonColor"))
         .cornerRadius(10)

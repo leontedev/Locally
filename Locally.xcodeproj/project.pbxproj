@@ -24,6 +24,7 @@
 		898C0367236B2FEC0044E0D5 /* AddLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0366236B2FEC0044E0D5 /* AddLocation.swift */; };
 		898C0369236B32590044E0D5 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0368236B32590044E0D5 /* MapView.swift */; };
 		89AE98852375B7B6007B6C04 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89AE98842375B7B6007B6C04 /* OnboardingView.swift */; };
+		89D1DC0E237B06ED0081D26F /* PlayGroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D1DC0D237B06ED0081D26F /* PlayGroundView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		898C0366236B2FEC0044E0D5 /* AddLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocation.swift; sourceTree = "<group>"; };
 		898C0368236B32590044E0D5 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		89AE98842375B7B6007B6C04 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		89D1DC0D237B06ED0081D26F /* PlayGroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayGroundView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 				8946655A2371C7E100932E43 /* SettingsView.swift */,
 				894665562371785F00932E43 /* AuoFocusTextField.swift */,
 				89AE98842375B7B6007B6C04 /* OnboardingView.swift */,
+				89D1DC0D237B06ED0081D26F /* PlayGroundView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				898C0365236B2F060044E0D5 /* LocationItem.swift in Sources */,
 				898C0363236B2ECC0044E0D5 /* Locations.swift in Sources */,
 				898C0348236B29360044E0D5 /* SceneDelegate.swift in Sources */,
+				89D1DC0E237B06ED0081D26F /* PlayGroundView.swift in Sources */,
 				898C0367236B2FEC0044E0D5 /* AddLocation.swift in Sources */,
 				8946655B2371C7E100932E43 /* SettingsView.swift in Sources */,
 			);
