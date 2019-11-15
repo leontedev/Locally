@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct SettingsView: View {
     @ObservedObject var settings: Settings
@@ -19,17 +20,22 @@ struct SettingsView: View {
                     if (UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!)) {
                         Toggle(isOn: $settings.isEnabledGoogleMaps) {
                             Text("Google Maps")
-                        }.padding()
+                                .foregroundColor(Color.init("TextNameColor"))
+                        }.padding(4.0)
                     }
                     
                     Toggle(isOn: $settings.isEnabledAppleMaps) {
                         Text("Apple Maps")
-                    }.padding()
+                            .foregroundColor(Color.init("TextNameColor"))
+                        }
+                    .padding(4.0)
+                    .foregroundColor(Color.init("ButtonColor"))
                     
                     if (UIApplication.shared.canOpenURL(URL(string: "waze://")!)) {
                         Toggle(isOn: $settings.isEnabledWaze) {
                             Text("Waze")
-                        }.padding()
+                                .foregroundColor(Color.init("TextNameColor"))
+                        }.padding(4.0)
                     }
                 }
                 
@@ -42,15 +48,19 @@ struct SettingsView: View {
                             Image(systemName: "info.circle.fill")//"arrow.up.right.diamond")
                                 .font(.largeTitle)
                                 .frame(width: 50)
+                                .foregroundColor(Color.init("ButtonColor"))
                             
                             VStack(alignment: .leading) {
-                                Text("Tutorial").font(.headline)
+                                Text("Tutorial")
+                                    .font(.headline)
+                                    .foregroundColor(Color.init("ButtonColor"))
+                                
                                 Text("Go through the onboarding screens again.")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             }
                         }
-                    }.padding()
+                    }.padding(.vertical)
                     
                     Button(action: {
                         if UIApplication.shared.canOpenURL(URL(string: "twitter://")!) {
@@ -63,34 +73,41 @@ struct SettingsView: View {
                             Image(systemName: "arrow.up.right.square.fill")
                                 .font(.largeTitle)
                                 .frame(width: 50)
+                                .foregroundColor(Color.init("ButtonColor"))
                             
                             VStack(alignment: .leading) {
-                                Text("Twitter").font(.headline)
+                                Text("Twitter")
+                                    .font(.headline)
+                                    .foregroundColor(Color.init("ButtonColor"))
                                 Text("Follow me on Twitter @leonte_dev")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             }
                         }
-                    }.padding()
+                    }.padding(.vertical)
                     
                     Button(action: {
-//                        rateApp(appId: "id959379869") { success in
-//                            print("RateApp \(success)")
-//                        }
+                        guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/idXXXXXXXXXX?action=write-review")
+                            else { fatalError("Expected a valid URL") }
+                        UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
                     }) {
                         HStack {
                             Image(systemName: "heart.circle.fill")
                                 .font(.largeTitle)
                                 .frame(width: 50)
+                                .foregroundColor(Color.init("ButtonColor"))
                             
                             VStack(alignment: .leading) {
-                                Text("App Store").font(.headline)
+                                Text("App Store")
+                                    .font(.headline)
+                                    .foregroundColor(Color.init("ButtonColor"))
+                                
                                 Text("Please rate Locally. It really helps!")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             }
                         }
-                    }.padding()
+                    }.padding(.vertical)
                 }
             }
             .navigationBarTitle("Settings")
@@ -100,23 +117,6 @@ struct SettingsView: View {
         }
     }
     
-    // MARK: Rate app functions
-    
-    func rateApp(appId: String, completion: @escaping ((_ success: Bool)->())) {
-        guard let url = URL(string : "itms-apps://itunes.apple.com/app/" + appId) else {
-            completion(false)
-            return
-        }
-        guard #available(iOS 10, *) else {
-            completion(UIApplication.shared.openURL(url))
-            return
-        }
-        UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: completion)
-    }
-    
-    fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
-        return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
-    }
 }
 
 struct SettingsView_Previews: PreviewProvider {

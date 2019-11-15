@@ -22,12 +22,13 @@ struct MapView: UIViewRepresentable {
         print("makeUIView")
         let mapView = MKMapView(frame: .zero)
         
-        let gRecognizer = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.triggerTouchAction(gestureReconizer:)))
+//        let gRecognizer = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.triggerTouchAction(gestureReconizer:)))
         
-        //let longPressRecognizer = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.triggerTouchAction(gestureReconizer:)))
-        //longPressRecognizer.minimumPressDuration = 0.3
+        let longPressRecognizer = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.triggerTouchAction(gestureReconizer:)))
+        longPressRecognizer.minimumPressDuration = 0.51
+        longPressRecognizer.numberOfTouchesRequired = 1
         
-        //mapView.addGestureRecognizer(gRecognizer)
+        mapView.addGestureRecognizer(longPressRecognizer)
         mapView.delegate = context.coordinator
         
         myMapView = mapView
@@ -90,7 +91,8 @@ struct MapView: UIViewRepresentable {
         
 
         @objc func triggerTouchAction(gestureReconizer: UITapGestureRecognizer) {
-            if gestureReconizer.state == .ended {
+            if gestureReconizer.state == .began {
+                myMapView?.becomeFirstResponder()
                 
                 updateLocationButton(withStatus: true)
 
@@ -101,16 +103,16 @@ struct MapView: UIViewRepresentable {
 
                 let point = gestureReconizer.location(in: mapView)
                 let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
-                
+
                 //Now use this coordinate to add annotation on map.
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = coordinate
                 annotation.title = "Custom Location"
-                
+
                 // Update Location Manager
                 self.mapView.locationManager.lastKnownCustomLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
                 self.mapView.locationManager.lastKnownCustomDescription = ""
-                
+
                 //Set subtitle with address
                 let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
                 LocationManager.retrievePostalAddress(from: location) { postalAddress in
@@ -173,6 +175,6 @@ struct MapView: UIViewRepresentable {
 
 //struct MapView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        MapView()
+//        MapView(locationManager: LocationManager(), location: )
 //    }
 //}

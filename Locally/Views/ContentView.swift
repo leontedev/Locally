@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-
+import StoreKit
 
 struct ContentView: View {
     @ObservedObject var locationManager = LocationManager()
@@ -29,6 +29,7 @@ struct ContentView: View {
                 OnboardingView()
                     .onTapGesture {
                         self.settings.showOnboardingView = false
+                        self.locationManager.startUpdating()
                     }
             } else {
                 VStack {
@@ -36,6 +37,7 @@ struct ContentView: View {
                             // MARK: MapView
                             MapView(locationManager: locationManager, location: $locationManager.lastKnownLocation)
                                 .frame(height: 350)
+                                .contentShape(Path(CGRect(x: 0, y: 0, width: 0, height: 0)))
                                 //.gesture(longPress)
                                 //.simultaneousGesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
                                 //.onEnded { print("Changed \($0.location)") })
@@ -87,6 +89,8 @@ struct ContentView: View {
                                     AddLocation(locations: self.locations, location: self.locationManager) })
                                 .offset(x: 120, y: 125)
                                 .shadow(radius: 6)
+                                
+                            
                         }
                         
                         Divider()
@@ -139,12 +143,39 @@ struct ContentView: View {
                     }
                     .onAppear {                        
                         self.locationManager.startUpdating()
+                        
                         // To remove only extra separators below the list:
                         UITableView.appearance().tableFooterView = UIView()
                         // To remove all separators including the actual ones:
                         UITableView.appearance().separatorStyle = .none
                         //UINavigationBar.appearance().backgroundColor = UIColor(named: "TextNameColor")
                         //UINavigationBar.appearance().titleTextAttributes = [.foregroundColor : UIColor(named: "TextNameColor")]
+                        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.init(named: "TextNameColor") ?? UIColor.blue]
+                        
+                        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.init(named: "TextNameColor") ?? UIColor.blue], for: .selected)
+                        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.init(named: "TextNameColor") ?? UIColor.blue], for: .normal)
+
+                        
+                        var runCount: Int = UserDefaults.standard.integer(forKey: "applicationRunsCount")
+                        runCount += 1
+                        UserDefaults.standard.set(runCount, forKey: "applicationRunsCount")
+                        
+                        let infoDictionaryKey = kCFBundleVersionKey as String
+                        guard let currentVersion = Bundle.main.object(forInfoDictionaryKey: infoDictionaryKey) as? String
+                            else { fatalError("Expected to find a bundle version in the info dictionary") }
+
+                        let lastVersionPromptedForReview = UserDefaults.standard.string(forKey: "lastVersionPromptedForReviewKey")
+                        
+                        if runCount >= 5 && currentVersion != lastVersionPromptedForReview {
+                            let twoSecondsFromNow = DispatchTime.now() + 2.0
+                            
+                            DispatchQueue.main.asyncAfter(deadline: twoSecondsFromNow) {
+                                SKStoreReviewController.requestReview()
+                                UserDefaults.standard.set(currentVersion, forKey: "lastVersionPromptedForReviewKey")
+                            }
+                        }
+                        
+
                     }.edgesIgnoringSafeArea(.all)
             }
         }

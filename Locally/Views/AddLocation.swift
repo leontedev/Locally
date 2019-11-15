@@ -57,7 +57,7 @@ struct AddLocation: View {
                 } else {
                     self.showAlert = true
                 }
-            })
+            }.disabled(name.isEmpty))
         }.alert(isPresented: $showAlert) {
             Alert(title: Text("Enter a name"), message: Text("Name field cannot be empty."))
         }
