@@ -20,15 +20,15 @@ struct MapView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> MKMapView {
         print("makeUIView")
-        let mapView = MKMapView(frame: .zero)
+        let mapView = MKMapView(frame: CGRect(x: 0, y: 0, width: 350, height: 350))
         
-//        let gRecognizer = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.triggerTouchAction(gestureReconizer:)))
+        let gRecognizer = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.triggerTouchAction(gestureReconizer:)))
         
-        let longPressRecognizer = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.triggerTouchAction(gestureReconizer:)))
-        longPressRecognizer.minimumPressDuration = 0.51
-        longPressRecognizer.numberOfTouchesRequired = 1
+//        let longPressRecognizer = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.triggerTouchAction(gestureReconizer:)))
+//        longPressRecognizer.minimumPressDuration = 0.51
+//        longPressRecognizer.numberOfTouchesRequired = 1
         
-        mapView.addGestureRecognizer(longPressRecognizer)
+        mapView.addGestureRecognizer(gRecognizer)
         mapView.delegate = context.coordinator
         
         myMapView = mapView
@@ -91,8 +91,8 @@ struct MapView: UIViewRepresentable {
         
 
         @objc func triggerTouchAction(gestureReconizer: UITapGestureRecognizer) {
-            if gestureReconizer.state == .began {
-                myMapView?.becomeFirstResponder()
+            //if gestureReconizer.state == .began {
+                //myMapView?.becomeFirstResponder()
                 
                 updateLocationButton(withStatus: true)
 
@@ -122,7 +122,8 @@ struct MapView: UIViewRepresentable {
 
                 mapView.addAnnotation(annotation)
                 mapView.selectAnnotation(annotation, animated: true)
-            }
+                mapView.resignFirstResponder()
+            //}
         }
 
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {

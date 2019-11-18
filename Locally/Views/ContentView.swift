@@ -24,25 +24,20 @@ struct ContentView: View {
     
     var body: some View {
 
-        return VStack {
-            if settings.showOnboardingView {
-                OnboardingView()
-                    .onTapGesture {
-                        self.settings.showOnboardingView = false
-                        self.locationManager.startUpdating()
-                    }
-            } else {
+//        return VStack {
+//            if settings.showOnboardingView {
+//                OnboardingView()
+//                    .onTapGesture {
+//                        self.settings.showOnboardingView = false
+//                        self.locationManager.startUpdating()
+//                    }
+//            } else {
                 VStack {
                         ZStack {
                             // MARK: MapView
                             MapView(locationManager: locationManager, location: $locationManager.lastKnownLocation)
                                 .frame(height: 350)
-                                .contentShape(Path(CGRect(x: 0, y: 0, width: 0, height: 0)))
-                                //.gesture(longPress)
-                                //.simultaneousGesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
-                                //.onEnded { print("Changed \($0.location)") })
-                    
-                            
+
                             if locationManager.shouldEnableCurrentLocationButton {
                                 VStack(spacing: 0) {
                                     Button(action: {
@@ -55,13 +50,13 @@ struct ContentView: View {
                                     .accentColor(Color.init("TextAccentColor"))
                                     .frame(width: 50, height: 50)
                                     .background(Color.init("ButtonColor"))
-                                    
+
                                     Rectangle()
                                         .foregroundColor(Color.init("TextAccentColor"))
                                         .frame(width:50, height:2)
                                         .fixedSize()
-                                        
-                                    
+
+
                                     Button(action: {
                                         self.locationManager.startUpdating()
                                         self.locationManager.shouldEnableCurrentLocationButton = false
@@ -74,26 +69,26 @@ struct ContentView: View {
                                 }
                                 .cornerRadius(10)
                                 .offset(x: -150, y: -92)
-                                .shadow(radius: 6)
+                                //.shadow(radius: 6)
                             } else {
                                 SettingsButton(showSheet: $showSettingsSheet)
                                     .sheet(isPresented: $showSettingsSheet, content: {
                                         SettingsView(settings: self.settings) })
                                     .offset(x: -150, y: -115)
-                                    .shadow(radius: 6)
+                                    //.shadow(radius: 6)
                             }
+                            
                             
                             // MARK: Save button
                             AddButton(showSheet: $showAddSheet)
                                 .sheet(isPresented: $showAddSheet, content: {
                                     AddLocation(locations: self.locations, location: self.locationManager) })
                                 .offset(x: 120, y: 125)
-                                .shadow(radius: 6)
-                                
-                            
+                                //.shadow(radius: 6)
                         }
                         
                         Divider()
+                    
                         // If only Waze is displayed - don't display the Picker (as it's not available)
                         if (settings.isEnabledAppleMaps || settings.isEnabledGoogleMaps) {
                             Picker("Type", selection: $settings.transitType) {
@@ -140,6 +135,7 @@ struct ContentView: View {
                             .buttonStyle(PlainButtonStyle())
                             
                         }
+                    
                     }
                     .onAppear {                        
                         self.locationManager.startUpdating()
@@ -177,8 +173,8 @@ struct ContentView: View {
                         
 
                     }.edgesIgnoringSafeArea(.all)
-            }
-        }
+            //}
+        //}
         
     }
 }
