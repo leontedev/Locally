@@ -131,8 +131,13 @@ struct MapView: UIViewRepresentable {
             let markerView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: nil)
             markerView.markerTintColor = UIColor.init(named: "ButtonColor")
             markerView.isDraggable = true
+            markerView.isSelected = true
 
             return markerView
+        }
+        
+        func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+            
         }
 
         // Recreate the annotation when the Marker is dragged to a new location
