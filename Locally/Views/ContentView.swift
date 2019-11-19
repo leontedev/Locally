@@ -24,14 +24,14 @@ struct ContentView: View {
     
     var body: some View {
 
-//        return VStack {
-//            if settings.showOnboardingView {
-//                OnboardingView()
-//                    .onTapGesture {
-//                        self.settings.showOnboardingView = false
-//                        self.locationManager.startUpdating()
-//                    }
-//            } else {
+        return VStack {
+            if settings.showOnboardingView {
+                OnboardingView()
+                    .onTapGesture {
+                        self.settings.showOnboardingView = false
+                        self.locationManager.startUpdating()
+                    }
+            } else {
                 VStack {
                         ZStack {
                             // MARK: MapView
@@ -173,8 +173,8 @@ struct ContentView: View {
                         
 
                     }.edgesIgnoringSafeArea(.all)
-            //}
-        //}
+            }
+        }
         
     }
 }

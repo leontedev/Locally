@@ -1,3 +1,0 @@
-* Locally
-*A SwiftUI app to save your location's coordinates. Browse your locations and open your favorite navigation app.*
-
