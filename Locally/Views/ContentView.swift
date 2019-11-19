@@ -24,28 +24,25 @@ struct ContentView: View {
     
     var body: some View {
 
-        return VStack {
-            if settings.showOnboardingView {
-                OnboardingView()
-                    .onTapGesture {
-                        self.settings.showOnboardingView = false
-                        self.locationManager.shouldEnableCurrentLocationButton = true
-                    }
-            } else {
+        ZStack {
+            //if settings.showOnboardingView {
+                
+            //} else {
+            GeometryReader { reader in
                 VStack {
                         ZStack {
                             // MARK: MapView
-                            MapView(locationManager: locationManager, location: $locationManager.lastKnownLocation)
+                            MapView(locationManager: self.locationManager, location: self.$locationManager.lastKnownLocation)
                                 .frame(height: 350)
 
-                            if locationManager.shouldEnableCurrentLocationButton {
+                            if self.locationManager.shouldEnableCurrentLocationButton {
                                 VStack(spacing: 0) {
                                     Button(action: {
                                         self.showSettingsSheet = true
                                     }) {
                                         Image(systemName: "gear").font(Font.body.weight(.heavy))
                                     }
-                                    .sheet(isPresented: $showSettingsSheet, content: {
+                                    .sheet(isPresented: self.$showSettingsSheet, content: {
                                         SettingsView(settings: self.settings) })
                                     .accentColor(Color.init("TextAccentColor"))
                                     .frame(width: 50, height: 50)
@@ -56,7 +53,6 @@ struct ContentView: View {
                                         .frame(width:50, height:1)
                                         .fixedSize()
 
-
                                     Button(action: {
                                         self.locationManager.startUpdating()
                                         self.locationManager.shouldEnableCurrentLocationButton = false
@@ -66,22 +62,22 @@ struct ContentView: View {
                                     .accentColor(Color.init("TextAccentColor"))
                                     .frame(width: 50, height: 50)
                                     .background(Color.init("ButtonColor"))
-                                }
+                                }//.shadow(radius: 6) // I had to comment out the shadow view modifer - as it was causing weird glitches (the tap gestures were going "through" the button down to the MapView)
                                 .cornerRadius(10)
-                                //.shadow(radius: 6)
-                                .offset(x: -150, y: -86)
+                                .offset(x: -145, y: -86)
                             } else {
-                                SettingsButton(showSheet: $showSettingsSheet)
-                                    .sheet(isPresented: $showSettingsSheet, content: {
+                                SettingsButton(showSheet: self.$showSettingsSheet)
+                                    .sheet(isPresented: self.$showSettingsSheet, content: {
                                         SettingsView(settings: self.settings) })
+                                    .frame(height: 50)
                                     //.shadow(radius: 6)
-                                    .offset(x: -150, y: -110)
+                                    .offset(x: -145, y: -110)
                             }
                             
                             
                             // MARK: Save button
-                            AddButton(showSheet: $showAddSheet)
-                                .sheet(isPresented: $showAddSheet, content: {
+                            AddButton(showSheet: self.$showAddSheet)
+                                .sheet(isPresented: self.$showAddSheet, content: {
                                     AddLocation(locations: self.locations, location: self.locationManager) })
                                 .shadow(radius: 6)
                                 .offset(x: 120, y: 125)
@@ -90,8 +86,8 @@ struct ContentView: View {
                         Divider()
                     
                         // If only Waze is displayed - don't display the Picker (as it's not available)
-                        if (settings.isEnabledAppleMaps || settings.isEnabledGoogleMaps) {
-                            Picker("Type", selection: $settings.transitType) {
+                    if (self.settings.isEnabledAppleMaps || self.settings.isEnabledGoogleMaps) {
+                        Picker("Type", selection: self.$settings.transitType) {
                                 Image(systemName: "car.fill").tag(0)
                                 Image(systemName: "tram.fill").tag(1)
                                 Image(systemName: "person.fill").tag(2)
@@ -131,7 +127,7 @@ struct ContentView: View {
     //                        )
                                 
                             }
-                            .onDelete(perform: removeItems)
+                            .onDelete(perform: self.removeItems)
                             .buttonStyle(PlainButtonStyle())
                             
                         }
@@ -172,9 +168,21 @@ struct ContentView: View {
                         }
                         
 
-                    }.edgesIgnoringSafeArea(.all)
+                    }
+                    // GeometryReader added to size down the Maximum width (this is due to the OnboardingView)
+                    .frame(maxWidth: reader.size.width - 20)
+                    .edgesIgnoringSafeArea(.all)
             }
+            
+        OnboardingView()
+            .onTapGesture {
+                self.settings.showOnboardingView = false
+            }
+            .allowsHitTesting(self.settings.showOnboardingView)
+            .opacity(self.settings.showOnboardingView ? 1.0 : 0)
+            
         }
+        
         
     }
 }
