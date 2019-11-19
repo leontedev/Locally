@@ -7,7 +7,7 @@
 **Quickly save a favorite location. 
 Customize which Navigation app you want to use: Maps, Google Maps or Waze.**
 
-![](onboard_s.png) ![](main_s.png) ![](settings_s.png)
+![](onboard_s.png) ![](main_s.png) ![](add_s.png) ![](settings_s.png)
 
 Technologies used: 
 - SwiftUI
