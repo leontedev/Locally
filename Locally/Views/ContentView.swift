@@ -29,7 +29,7 @@ struct ContentView: View {
                 OnboardingView()
                     .onTapGesture {
                         self.settings.showOnboardingView = false
-                        self.locationManager.startUpdating()
+                        self.locationManager.shouldEnableCurrentLocationButton = true
                     }
             } else {
                 VStack {
@@ -53,7 +53,7 @@ struct ContentView: View {
 
                                     Rectangle()
                                         .foregroundColor(Color.init("TextAccentColor"))
-                                        .frame(width:50, height:2)
+                                        .frame(width:50, height:1)
                                         .fixedSize()
 
 
@@ -68,14 +68,14 @@ struct ContentView: View {
                                     .background(Color.init("ButtonColor"))
                                 }
                                 .cornerRadius(10)
-                                .offset(x: -150, y: -92)
                                 //.shadow(radius: 6)
+                                .offset(x: -150, y: -86)
                             } else {
                                 SettingsButton(showSheet: $showSettingsSheet)
                                     .sheet(isPresented: $showSettingsSheet, content: {
                                         SettingsView(settings: self.settings) })
-                                    .offset(x: -150, y: -115)
                                     //.shadow(radius: 6)
+                                    .offset(x: -150, y: -110)
                             }
                             
                             
@@ -83,8 +83,8 @@ struct ContentView: View {
                             AddButton(showSheet: $showAddSheet)
                                 .sheet(isPresented: $showAddSheet, content: {
                                     AddLocation(locations: self.locations, location: self.locationManager) })
+                                .shadow(radius: 6)
                                 .offset(x: 120, y: 125)
-                                //.shadow(radius: 6)
                         }
                         
                         Divider()
