@@ -8,12 +8,12 @@
 
 import Foundation
 
-struct LocationItem: Identifiable, Codable {
-    let id = UUID()
-    let name: String
-    let latitude: Double
-    let longitude: Double
-    let date: Date
-    //let dateString: String
-    let description: String
-}
+//struct LocationItem: Identifiable, Codable {
+//    let id = UUID()
+//    let name: String
+//    let latitude: Double
+//    let longitude: Double
+//    let date: Date
+//    //let dateString: String
+//    let description: String
+//}

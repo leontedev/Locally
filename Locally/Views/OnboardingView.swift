@@ -48,53 +48,56 @@ struct OnboardingView: View {
     
     var body: some View {
         
+        GeometryReader { reader in
             ZStack {
-                FieldOfView(inset: 100)
-                    .fill(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.clear]), startPoint: .bottom, endPoint: .top))
-                
-                    //.stroke(Color.blue, lineWidth: 5)
-                    .frame(width: 400, height: 400)
-                    .offset(y: -220)
+                    FieldOfView(inset: 100)
+                        .fill(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.clear]), startPoint: .bottom, endPoint: .top))
+                    
+                        //.stroke(Color.blue, lineWidth: 5)
+                        .frame(width: 400, height: 400)
+                        .offset(y: -220)
 
-                Circle()
-                    //.stroke(Color.blue, lineWidth: 10)
-                    .fill(Color.white)
-                    .shadow(radius: 10)
-                    .frame(width: 270)
-                Circle()
-                    .fill(Color.blue)
-                    .shadow(radius: 5)
-                    .frame(width: 180)
-                    .scaleEffect(size)
-                    .onAppear() {
-                        withAnimation(Animation.easeInOut(duration: 1.5).repeatForever()) {
-                            self.size = 1.2 }
-                        }
-                Arrow()
-                    //.stroke(Color.red, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
-                    .fill(Color.blue)
-                    .frame(width: 140, height: 90)
-                    .shadow(radius: 2)
-                    .offset(y: -140)
-                
-                Text("Locally")
-                    .font(.system(size: 60, weight: .bold, design: .rounded))
-                    .foregroundColor(.white)
-                    .offset(y: -300)
-                
-                VStack(alignment: .center, spacing: 70) {
-                    Text("Save your favorite destinations and navigate to them quickly.")
-                        .font(.system(size: 20, weight: .medium, design: .rounded))
+                    Circle()
+                        //.stroke(Color.blue, lineWidth: 10)
+                        .fill(Color.white)
+                        .shadow(radius: 10)
+                        .frame(width: 270)
+                    Circle()
+                        .fill(Color.blue)
+                        .shadow(radius: 5)
+                        .frame(width: 180)
+                        .scaleEffect(self.size)
+                        .onAppear() {
+                            withAnimation(Animation.easeInOut(duration: 1.5).repeatForever()) {
+                                self.size = 1.2 }
+                            }
+                    Arrow()
+                        //.stroke(Color.red, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
+                        .fill(Color.blue)
+                        .frame(width: 140, height: 90)
+                        .shadow(radius: 2)
+                        .offset(y: -140)
+                    
+                    Text("Locally")
+                        .font(.system(size: 60, weight: .bold, design: .rounded))
                         .foregroundColor(.white)
-                        .frame(width: 300)
-                    Text("Tap to continue")
-                        .font(.system(size: 15, weight: .heavy, design: .rounded))
-                    .foregroundColor(.white)
-                }.offset(y: 250)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.green.saturation(0.3))
-            .edgesIgnoringSafeArea(.all)
+                        .offset(y: -300)
+                    
+                    VStack(alignment: .center, spacing: 70) {
+                        Text("Save your favorite destinations and navigate to them quickly.")
+                            .font(.system(size: 20, weight: .medium, design: .rounded))
+                            .foregroundColor(.white)
+                            .frame(width: 300)
+                        Text("Tap to continue")
+                            .font(.system(size: 15, weight: .heavy, design: .rounded))
+                        .foregroundColor(.white)
+                    }.offset(y: 250)
+                }
+                .background(Color.green.saturation(0.3))
+                .edgesIgnoringSafeArea(.all)
+                //.frame(width: reader.size.width, height: reader.size.height)
+                .aspectRatio(CGFloat(reader.size.width / reader.size.height) , contentMode: .fit)
+        }
             
         }
 }

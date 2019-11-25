@@ -11,29 +11,45 @@ import StoreKit
 
 struct ContentView: View {
     @ObservedObject var locationManager = LocationManager()
-    @ObservedObject var locations = Locations()
     @ObservedObject var settings = Settings()
+    
+    //@ObservedObject var locations = Locations()
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(entity: Location.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Location.date, ascending: false)]) var locations: FetchedResults<Location>
     
     @State private var showAddSheet = false
     @State private var showSettingsSheet = false
     @State private var type = 0
     
     func removeItems(at offsets: IndexSet) {
-        locations.items.remove(atOffsets: offsets)
+        //locations.items.remove(atOffsets: offsets)
+        for offset in offsets {
+            let loc = locations[offset]
+            moc.delete(loc)
+        }
+        if moc.hasChanges {
+            try? moc.save()
+        }
     }
     
     var body: some View {
-
-        ZStack {
-            //if settings.showOnboardingView {
-                
-            //} else {
-            GeometryReader { reader in
-                VStack {
+        
+        if self.settings.showOnboardingView {
+            return AnyView(OnboardingView()
+                    .onTapGesture {
+                        self.settings.showOnboardingView = false
+                    }
+                    .allowsHitTesting(self.settings.showOnboardingView)
+                    .opacity(self.settings.showOnboardingView ? 1.0 : 0)
+            )
+        } else {
+            return AnyView(
+                GeometryReader { reader in
+                    VStack {
                         ZStack {
                             // MARK: MapView
                             MapView(locationManager: self.locationManager, location: self.$locationManager.lastKnownLocation)
-                                .frame(height: 350)
+                                .frame(height: reader.size.height / 2)
 
                             if self.locationManager.shouldEnableCurrentLocationButton {
                                 VStack(spacing: 0) {
@@ -45,12 +61,12 @@ struct ContentView: View {
                                     .sheet(isPresented: self.$showSettingsSheet, content: {
                                         SettingsView(settings: self.settings) })
                                     .accentColor(Color.init("TextAccentColor"))
-                                    .frame(width: 50, height: 50)
+                                    .frame(width: reader.size.height / 14, height: reader.size.height / 14)
                                     .background(Color.init("ButtonColor"))
 
                                     Rectangle()
                                         .foregroundColor(Color.init("TextAccentColor"))
-                                        .frame(width:50, height:1)
+                                        .frame(width:reader.size.height / 14, height:1)
                                         .fixedSize()
 
                                     Button(action: {
@@ -60,53 +76,65 @@ struct ContentView: View {
                                         Image(systemName: "location.north.fill").font(Font.body.weight(.heavy))
                                     }
                                     .accentColor(Color.init("TextAccentColor"))
-                                    .frame(width: 50, height: 50)
+                                    .frame(width: reader.size.height / 14, height: reader.size.height / 14)
                                     .background(Color.init("ButtonColor"))
                                 }//.shadow(radius: 6) // I had to comment out the shadow view modifer - as it was causing weird glitches (the tap gestures were going "through" the button down to the MapView)
                                 .cornerRadius(10)
-                                .offset(x: -145, y: -86)
+                                .offset(x: -reader.size.width / 2.6, y: -reader.size.height / 7.5)
                             } else {
                                 SettingsButton(showSheet: self.$showSettingsSheet)
                                     .sheet(isPresented: self.$showSettingsSheet, content: {
                                         SettingsView(settings: self.settings) })
-                                    .frame(height: 50)
+                                    // FIXME: Not working
+                                    .frame(width: reader.size.height)
                                     //.shadow(radius: 6)
-                                    .offset(x: -145, y: -110)
+                                    .offset(x: -reader.size.width / 2.6, y: -reader.size.height / 6)
                             }
                             
                             
                             // MARK: Save button
                             AddButton(showSheet: self.$showAddSheet)
                                 .sheet(isPresented: self.$showAddSheet, content: {
-                                    AddLocation(locations: self.locations, location: self.locationManager) })
+                                    AddLocation(location: self.locationManager)
+                                        .environment(\.managedObjectContext, self.moc)
+                                })
                                 .shadow(radius: 6)
-                                .offset(x: 120, y: 125)
+                                .offset(x: reader.size.width / 3, y: reader.size.height / 5)
                         }
-                        
+                            
                         Divider()
-                    
-                        // If only Waze is displayed - don't display the Picker (as it's not available)
-                    if (self.settings.isEnabledAppleMaps || self.settings.isEnabledGoogleMaps) {
-                        Picker("Type", selection: self.$settings.transitType) {
-                                Image(systemName: "car.fill").tag(0)
-                                Image(systemName: "tram.fill").tag(1)
-                                Image(systemName: "person.fill").tag(2)
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
-                            .padding(.leading, 10)
-                            .padding(.trailing, 10)
-                            .accentColor(Color.init("TextAccentColor"))
+                        
+                        if self.locations.isEmpty {
+                            Text("No Locations Saved")
+                                .font(.system(size: 20, weight: .bold, design: .rounded))
+                                .foregroundColor(Color.gray)
+                                .padding(.top, 40.0)
                         }
                         
+                        // If only Waze is displayed - don't display the Picker (as it's not available)
+                        if (self.settings.isEnabledAppleMaps || self.settings.isEnabledGoogleMaps) && !self.locations.isEmpty {
+                            Picker("Type", selection: self.$settings.transitType) {
+                                    Image(systemName: "car.fill").tag(0)
+                                    Image(systemName: "tram.fill").tag(1)
+                                    Image(systemName: "person.fill").tag(2)
+                                }
+                                .pickerStyle(SegmentedPickerStyle())
+                                .padding(.leading, 10)
+                                .padding(.trailing, 10)
+                                .accentColor(Color.init("TextAccentColor"))
+                                .frame(maxWidth: reader.size.width)
+                        }
+                            
                         List {
-                            ForEach(self.locations.items) { item in
+                            ForEach(self.locations, id: \.self) { location in
                                 HStack {
                                     VStack(alignment: .leading) {
-                                        Text(item.name)
+                                        Text(location.name ?? "Unknown")
                                             .font(.headline)
                                             .padding(.leading, 15)
                                             .foregroundColor(Color.init("TextNameColor"))
-                                        Text(item.description)
+                                        
+                                        Text(location.address ?? "")
                                             .font(.caption)
                                             .foregroundColor(Color.gray)
                                             .padding(.leading, 15)
@@ -114,26 +142,25 @@ struct ContentView: View {
                                     
                                     Spacer()
                                     
-                                    NavigationMenu(settings: self.settings, item: item)
+                                    NavigationMenu(settings: self.settings,
+                                                   latitude: location.latitude ?? 0,
+                                                   longitude: location.longitude ?? 0)
                                 }
                                 .padding(5)
                                 .background(Color.init("CellColor"))
                                 .cornerRadius(16)
                                 .clipped()
                                 .shadow(radius: 1)
-    //                        .overlay(
-    //                            RoundedRectangle(cornerRadius: 16)
-    //                                .stroke(Color.blue, lineWidth: 0.2)
-    //                        )
                                 
                             }
                             .onDelete(perform: self.removeItems)
                             .buttonStyle(PlainButtonStyle())
                             
-                        }
-                    
+                        }.frame(maxWidth: reader.size.width)
+                        
+                        
                     }
-                    .onAppear {                        
+                    .onAppear {
                         self.locationManager.startUpdating()
                         
                         // To remove only extra separators below the list:
@@ -170,20 +197,12 @@ struct ContentView: View {
 
                     }
                     // GeometryReader added to size down the Maximum width (this is due to the OnboardingView)
-                    .frame(maxWidth: reader.size.width - 20)
+                    .frame(maxWidth: reader.size.width)
+                    //.aspectRatio(CGFloat(reader.size.width / reader.size.height) , contentMode: .fit)
                     .edgesIgnoringSafeArea(.all)
+                        
+                })
             }
-            
-        OnboardingView()
-            .onTapGesture {
-                self.settings.showOnboardingView = false
-            }
-            .allowsHitTesting(self.settings.showOnboardingView)
-            .opacity(self.settings.showOnboardingView ? 1.0 : 0)
-            
-        }
-        
-        
     }
 }
 
@@ -233,7 +252,8 @@ struct SettingsButton: View {
 
 struct NavigationMenu: View {
     @ObservedObject var settings: Settings
-    var item: LocationItem
+    var latitude: Double
+    var longitude: Double
     
     private let googleMapsTypes = ["driving", "transit", "walking"]
     private let appleMapsTypes = ["d", "r", "w"]
@@ -243,38 +263,18 @@ struct NavigationMenu: View {
     @ViewBuilder var body: some View {
         HStack {
             if settings.isEnabledGoogleMaps {
-                NavigationButton(name: (settings.isEnabledAppleMaps || settings.isEnabledWaze) ? buttonLabels[1] : buttonLabels[0], urlString: "comgooglemaps://?daddr=\(item.latitude),\(item.longitude)&directionsmode=\(self.googleMapsTypes[self.settings.transitType])")
+                NavigationButton(name: (settings.isEnabledAppleMaps || settings.isEnabledWaze) ? buttonLabels[1] : buttonLabels[0], urlString: "comgooglemaps://?daddr=\(latitude),\(longitude)&directionsmode=\(self.googleMapsTypes[self.settings.transitType])")
                 
             }
             if settings.isEnabledAppleMaps {
-                NavigationButton(name: (settings.isEnabledGoogleMaps || settings.isEnabledWaze) ? buttonLabels[2] : buttonLabels[0], urlString: "http://maps.apple.com/?daddr=\(item.latitude),\(item.longitude)&dirflg=\(self.appleMapsTypes[self.settings.transitType])")
+                NavigationButton(name: (settings.isEnabledGoogleMaps || settings.isEnabledWaze) ? buttonLabels[2] : buttonLabels[0], urlString: "http://maps.apple.com/?daddr=\(latitude),\(longitude)&dirflg=\(self.appleMapsTypes[self.settings.transitType])")
             }
             if settings.isEnabledWaze {
-                NavigationButton(name: (settings.isEnabledAppleMaps || settings.isEnabledGoogleMaps) ? buttonLabels[3] : buttonLabels[0], urlString: "waze://?ll=\(item.latitude),\(item.longitude)&navigate=yes&zoom=17")
+                NavigationButton(name: (settings.isEnabledAppleMaps || settings.isEnabledGoogleMaps) ? buttonLabels[3] : buttonLabels[0], urlString: "waze://?ll=\(latitude),\(longitude)&navigate=yes&zoom=17")
             }
         }
         
     }
 }
 
-struct NavigationButton: View {
-    var name: String
-    var urlString: String
-    
-    
-    var body: some View {
-        Button(action: {
-            UIApplication.shared.open(URL(string: self.urlString)!)
-        }) {
-            Text(name)
-                .font(.footnote)
-                .foregroundColor(Color.init("TextAccentColor"))
-        }
-        .multilineTextAlignment(.center)
-        .frame(minWidth: 0, maxWidth: 45)
-        .padding(12)
-        .background(Color.init("ButtonColor"))
-        .cornerRadius(10)
-        .padding(5)
-    }
-}
+

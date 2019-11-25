@@ -16,12 +16,14 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Enable only the Navigation apps you plan to use.")) {
+                Section(header: Text("Enable only the Navigation apps you plan to use (max 2).")) {
                     if (UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!)) {
                         Toggle(isOn: $settings.isEnabledGoogleMaps) {
                             Text("Google Maps")
                                 .foregroundColor(Color.init("TextNameColor"))
-                        }.padding(4.0)
+                        }
+                        .padding(4.0)
+                        .disabled(settings.isEnabledWaze && settings.isEnabledAppleMaps)
                     }
                     
                     Toggle(isOn: $settings.isEnabledAppleMaps) {
@@ -30,12 +32,15 @@ struct SettingsView: View {
                         }
                     .padding(4.0)
                     .foregroundColor(Color.init("ButtonColor"))
+                    .disabled(settings.isEnabledGoogleMaps && settings.isEnabledWaze)
                     
                     if (UIApplication.shared.canOpenURL(URL(string: "waze://")!)) {
                         Toggle(isOn: $settings.isEnabledWaze) {
                             Text("Waze")
                                 .foregroundColor(Color.init("TextNameColor"))
-                        }.padding(4.0)
+                        }
+                        .padding(4.0)
+                        .disabled(settings.isEnabledGoogleMaps && settings.isEnabledAppleMaps)
                     }
                 }
                 

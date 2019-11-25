@@ -10,13 +10,14 @@ import SwiftUI
 import CoreLocation
 
 struct AddLocation: View {
-    @ObservedObject var locations: Locations
-    @ObservedObject var location: LocationManager
-    
+    //@ObservedObject var locations: Locations
+    @Environment(\.managedObjectContext) var moc
     @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var location: LocationManager
     
     @State private var name = ""
     @State private var showAlert = false
+    
     
     var body: some View {
         NavigationView {
@@ -36,22 +37,32 @@ struct AddLocation: View {
             .navigationBarItems(trailing: Button("Save") {
                 if self.name != "" {
                     
-                    if self.location.shouldEnableCurrentLocationButton {
-                        let item = LocationItem(name: self.name,
-                                                latitude: Double(self.location.lastKnownCustomLocation?.coordinate.latitude ?? 0),
-                                                longitude: Double(self.location.lastKnownCustomLocation?.coordinate.longitude ?? 0),
-                                                date: Date(),
-                                                description: self.location.lastKnownCustomDescription ?? "Unknown")
-                        self.locations.items.append(item)
-                    } else {
-                        let item = LocationItem(name: self.name,
-                                                latitude: Double(self.location.lastKnownLocation?.coordinate.latitude ?? 0),
-                                                longitude: Double(self.location.lastKnownLocation?.coordinate.longitude ?? 0),
-                                                date: Date(),
-                                                description: self.location.lastKnownDescription ?? "Unknown")
-                        self.locations.items.append(item)
-                    }
+//                    if self.location.shouldEnableCurrentLocationButton {
+//                        let item = LocationItem(name: self.name,
+//                                                latitude: Double(self.location.lastKnownCustomLocation?.coordinate.latitude ?? 0),
+//                                                longitude: Double(self.location.lastKnownCustomLocation?.coordinate.longitude ?? 0),
+//                                                date: Date(),
+//                                                description: self.location.lastKnownCustomDescription ?? "Unknown")
+//                        self.locations.items.append(item)
+//                    } else {
+//                        let item = LocationItem(name: self.name,
+//                                                latitude: Double(self.location.lastKnownLocation?.coordinate.latitude ?? 0),
+//                                                longitude: Double(self.location.lastKnownLocation?.coordinate.longitude ?? 0),
+//                                                date: Date(),
+//                                                description: self.location.lastKnownDescription ?? "Unknown")
+//                        self.locations.items.append(item)
+//                    }
                     
+                    let newLocation = Location(context: self.moc)
+                    newLocation.name = self.name
+                    newLocation.latitude = self.location.shouldEnableCurrentLocationButton ? Double(self.location.lastKnownCustomLocation?.coordinate.latitude ?? 0) : Double(self.location.lastKnownLocation?.coordinate.latitude ?? 0)
+                    newLocation.longitude = self.location.shouldEnableCurrentLocationButton ? Double(self.location.lastKnownCustomLocation?.coordinate.longitude ?? 0) : Double(self.location.lastKnownLocation?.coordinate.longitude ?? 0)
+                    newLocation.date = Date()
+                    newLocation.address = self.location.shouldEnableCurrentLocationButton ? self.location.lastKnownCustomDescription ?? "Unknown" : self.location.lastKnownDescription ?? "Unknown"
+                    
+                    if self.moc.hasChanges {
+                        try? self.moc.save()
+                    }
                     self.name = ""
                     self.presentationMode.wrappedValue.dismiss()
                 } else {

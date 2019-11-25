@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8942D9E623843F4600F8C613 /* NavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8942D9E523843F4600F8C613 /* NavigationButton.swift */; };
 		894665572371785F00932E43 /* AuoFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894665562371785F00932E43 /* AuoFocusTextField.swift */; };
 		8946655923719AEA00932E43 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946655823719AEA00932E43 /* LocationManager.swift */; };
 		8946655B2371C7E100932E43 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946655A2371C7E100932E43 /* SettingsView.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8942D9E523843F4600F8C613 /* NavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButton.swift; sourceTree = "<group>"; };
 		894665562371785F00932E43 /* AuoFocusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuoFocusTextField.swift; sourceTree = "<group>"; };
 		8946655823719AEA00932E43 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		8946655A2371C7E100932E43 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -88,10 +90,10 @@
 				898C0361236B2E980044E0D5 /* Views */,
 				898C0360236B2E920044E0D5 /* Model */,
 				898C035C236B2AA10044E0D5 /* Locally.entitlements */,
+				898C0349236B29370044E0D5 /* Locally.xcdatamodeld */,
 				898C034E236B293B0044E0D5 /* Assets.xcassets */,
 				898C0353236B293B0044E0D5 /* LaunchScreen.storyboard */,
 				898C0356236B293B0044E0D5 /* Info.plist */,
-				898C0349236B29370044E0D5 /* Locally.xcdatamodeld */,
 				898C0350236B293B0044E0D5 /* Preview Content */,
 			);
 			path = Locally;
@@ -134,6 +136,7 @@
 				894665562371785F00932E43 /* AuoFocusTextField.swift */,
 				89AE98842375B7B6007B6C04 /* OnboardingView.swift */,
 				89D1DC0D237B06ED0081D26F /* PlayGroundView.swift */,
+				8942D9E523843F4600F8C613 /* NavigationButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				898C034D236B29370044E0D5 /* ContentView.swift in Sources */,
 				8946655D2371D28F00932E43 /* Settings.swift in Sources */,
 				89AE98852375B7B6007B6C04 /* OnboardingView.swift in Sources */,
+				8942D9E623843F4600F8C613 /* NavigationButton.swift in Sources */,
 				898C0365236B2F060044E0D5 /* LocationItem.swift in Sources */,
 				898C0363236B2ECC0044E0D5 /* Locations.swift in Sources */,
 				898C0348236B29360044E0D5 /* SceneDelegate.swift in Sources */,

@@ -8,25 +8,25 @@
 
 import Foundation
 
-class Locations: ObservableObject {
-    @Published var items = [LocationItem]() {
-        didSet {
-            let encoder = JSONEncoder()
-            if let data = try? encoder.encode(items) {
-                UserDefaults.standard.set(data, forKey: "Items")
-            }
-        }
-    }
-    
-    init() {
-        if let data = UserDefaults.standard.data(forKey: "Items") {
-            let decoder = JSONDecoder()
-            if let decodedData = try? decoder.decode([LocationItem].self, from: data) {
-                items = decodedData
-                return
-            }
-        }
-        items = []
-    }
-}
+//class Locations: ObservableObject {
+//    @Published var items = [LocationItem]() {
+//        didSet {
+//            let encoder = JSONEncoder()
+//            if let data = try? encoder.encode(items) {
+//                UserDefaults.standard.set(data, forKey: "Items")
+//            }
+//        }
+//    }
+//    
+//    init() {
+//        if let data = UserDefaults.standard.data(forKey: "Items") {
+//            let decoder = JSONDecoder()
+//            if let decodedData = try? decoder.decode([LocationItem].self, from: data) {
+//                items = decodedData
+//                return
+//            }
+//        }
+//        items = []
+//    }
+//}
 
