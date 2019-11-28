@@ -46,21 +46,22 @@ struct SettingsView: View {
                 
                 Section {
                     Button(action: {
-                        self.settings.showOnboardingView = true
-                        self.presentationMode.wrappedValue.dismiss()
+                        guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/idXXXXXXXXXX?action=write-review")
+                            else { fatalError("Expected a valid URL") }
+                        UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
                     }) {
                         HStack {
-                            Image(systemName: "info.circle.fill")//"arrow.up.right.diamond")
+                            Image(systemName: "heart.circle.fill")
                                 .font(.largeTitle)
                                 .frame(width: 50)
                                 .foregroundColor(Color.init("ButtonColor"))
                             
                             VStack(alignment: .leading) {
-                                Text("Tutorial")
+                                Text("App Store")
                                     .font(.headline)
                                     .foregroundColor(Color.init("ButtonColor"))
                                 
-                                Text("Show the intro screen again.")
+                                Text("Please rate Locally. It really helps!")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             }
@@ -92,22 +93,42 @@ struct SettingsView: View {
                     }.padding(.vertical)
                     
                     Button(action: {
-                        guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/idXXXXXXXXXX?action=write-review")
-                            else { fatalError("Expected a valid URL") }
-                        UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
+                        self.settings.showOnboardingView = true
+                        self.presentationMode.wrappedValue.dismiss()
                     }) {
                         HStack {
-                            Image(systemName: "heart.circle.fill")
+                            Image(systemName: "info.circle.fill")//"arrow.up.right.diamond")
                                 .font(.largeTitle)
                                 .frame(width: 50)
                                 .foregroundColor(Color.init("ButtonColor"))
                             
                             VStack(alignment: .leading) {
-                                Text("App Store")
+                                Text("Tutorial")
                                     .font(.headline)
                                     .foregroundColor(Color.init("ButtonColor"))
                                 
-                                Text("Please rate Locally. It really helps!")
+                                Text("Show the intro screen again.")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                    }.padding(.vertical)
+                    
+                    
+                    Button(action: {
+                        UIApplication.shared.open(URL(string: "https://github.com/leontedev/Locally/blob/master/PRIVACY.md")!)
+                    }) {
+                        HStack {
+                            Image(systemName: "hand.raised.fill")
+                                .font(.largeTitle)
+                                .frame(width: 50)
+                                .foregroundColor(Color.init("ButtonColor"))
+                            
+                            VStack(alignment: .leading) {
+                                Text("Privacy Policy")
+                                    .font(.headline)
+                                    .foregroundColor(Color.init("ButtonColor"))
+                                Text("Zero data collection.")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             }

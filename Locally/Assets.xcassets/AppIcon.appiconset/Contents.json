@@ -100,48 +100,9 @@
       "scale" : "2x"
     },
     {
-      "idiom" : "ios-marketing",
       "size" : "1024x1024",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "App Icon.png",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "icon_83.5@2x.png",
-      "scale" : "2x"
-    },
-    {
-      "size" : "20x20",
-      "idiom" : "universal",
-      "filename" : "icon_20pt.png",
-      "scale" : "1x"
-    },
-    {
-      "size" : "40x40",
-      "idiom" : "universal",
-      "filename" : "icon_40pt.png",
-      "scale" : "1x"
-    },
-    {
-      "size" : "76x76",
-      "idiom" : "universal",
-      "filename" : "icon_76pt.png",
-      "scale" : "1x"
-    },
-    {
-      "size" : "76x76",
-      "idiom" : "universal",
-      "filename" : "icon_76pt@2x.png",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
+      "idiom" : "ios-marketing",
       "filename" : "Icon.png",
-      "unassigned" : true,
       "scale" : "1x"
     }
   ],
