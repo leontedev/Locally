@@ -45,6 +45,7 @@ struct FieldOfView: Shape {
 struct OnboardingView: View {
     static var shouldAnimate = true
     @State var size: CGFloat = 1
+    @Binding var taps: Int
     
     var body: some View {
         
@@ -84,9 +85,9 @@ struct OnboardingView: View {
                         .offset(y: -reader.size.height/2.5)
                     
                     VStack(alignment: .center, spacing: 70) {
-                        Text("Save your favorite destinations and navigate to them quickly.")
+                        Text((self.taps == 0) ? "Save your favorite destinations and navigate to them quickly." : "Tap the map or drag the marker to select a custom location.")
                             .font(.system(size: 20, weight: .medium, design: .rounded))
-                            .foregroundColor(.white)
+                            .foregroundColor( .white)
                             .frame(width: 300)
                         Text("Tap to continue")
                             .font(.system(size: 15, weight: .heavy, design: .rounded))
@@ -101,8 +102,8 @@ struct OnboardingView: View {
         }
 }
 
-struct OnboardingView_Previews: PreviewProvider {
-    static var previews: some View {
-        OnboardingView()
-    }
-}
+//struct OnboardingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        OnboardingView()
+//    }
+//}

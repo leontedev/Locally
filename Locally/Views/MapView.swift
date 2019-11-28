@@ -19,7 +19,7 @@ struct MapView: UIViewRepresentable {
     @Binding var location: CLLocation?
     
     func makeUIView(context: Context) -> MKMapView {
-        print("makeUIView")
+        //print("makeUIView")
         let mapView = MKMapView(frame: CGRect(x: 0, y: 0, width: 350, height: 350))
         
         let gRecognizer = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.triggerTouchAction(gestureReconizer:)))
@@ -62,7 +62,7 @@ struct MapView: UIViewRepresentable {
                 myAnnotation.subtitle = postalAddress
             }
 
-            print("Adding current location annotation")
+            //print("Adding current location annotation")
             view.addAnnotation(myAnnotation)
             view.selectAnnotation(myAnnotation, animated: false)
             

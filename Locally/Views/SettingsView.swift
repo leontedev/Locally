@@ -60,7 +60,7 @@ struct SettingsView: View {
                                     .font(.headline)
                                     .foregroundColor(Color.init("ButtonColor"))
                                 
-                                Text("Go through the onboarding screens again.")
+                                Text("Show the intro screen again.")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             }

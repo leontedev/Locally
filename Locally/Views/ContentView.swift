@@ -21,6 +21,8 @@ struct ContentView: View {
     @State private var showSettingsSheet = false
     @State private var type = 0
     
+    @State private var onboardingTapsCounter = 0
+    
     func removeItems(at offsets: IndexSet) {
         //locations.items.remove(atOffsets: offsets)
         for offset in offsets {
@@ -35,10 +37,13 @@ struct ContentView: View {
     var body: some View {
         
         if self.settings.showOnboardingView {
-            return AnyView(OnboardingView()
+            return AnyView(OnboardingView(taps: $onboardingTapsCounter)
                     .onTapGesture {
-                        self.settings.showOnboardingView = false
-                        self.locationManager.shouldEnableCurrentLocationButton = false
+                        self.onboardingTapsCounter += 1
+                        if self.onboardingTapsCounter > 1 {
+                            self.settings.showOnboardingView = false
+                            self.locationManager.shouldEnableCurrentLocationButton = false
+                        }
                     })
 
         } else {

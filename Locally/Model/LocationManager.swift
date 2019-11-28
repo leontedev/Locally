@@ -37,7 +37,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         
         self.manager.startUpdatingLocation()
         //self.manager.startMonitoringVisits()
-        print("OUTPUT startUpdating")
+        //print("OUTPUT startUpdating")
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -57,7 +57,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         let clLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
         lastKnownLocation = clLocation
         
-        print("OUTPUT didVisit \(lastKnownLocation)")
+        //print("OUTPUT didVisit \(lastKnownLocation)")
         LocationManager.retrievePostalAddress(from: clLocation) { postalAddress in
             self.lastKnownDescription = postalAddress
         }
