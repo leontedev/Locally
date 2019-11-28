@@ -16,7 +16,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Enable only the Navigation apps you plan to use (max 2).")) {
+                Section(header: Text("Enable the navigation apps you plan to use (max 2)")) {
                     if (UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!)) {
                         Toggle(isOn: $settings.isEnabledGoogleMaps) {
                             Text("Google Maps")
