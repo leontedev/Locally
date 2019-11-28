@@ -81,7 +81,7 @@ struct OnboardingView: View {
                     Text("Locally")
                         .font(.system(size: 60, weight: .bold, design: .rounded))
                         .foregroundColor(.white)
-                        .offset(y: -300)
+                        .offset(y: -reader.size.height/2.5)
                     
                     VStack(alignment: .center, spacing: 70) {
                         Text("Save your favorite destinations and navigate to them quickly.")
@@ -93,11 +93,10 @@ struct OnboardingView: View {
                         .foregroundColor(.white)
                     }.offset(y: 250)
                 }
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .background(Color.green.saturation(0.3))
                 .edgesIgnoringSafeArea(.all)
-                //.frame(width: reader.size.width, height: reader.size.height)
-                .aspectRatio(CGFloat(reader.size.width / reader.size.height) , contentMode: .fit)
-        }
+            }
             
         }
 }

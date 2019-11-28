@@ -34,13 +34,15 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     func startUpdating() {
         self.manager.delegate = self
         self.manager.requestWhenInUseAuthorization()
+        
         self.manager.startUpdatingLocation()
-        print("startUpdating")
+        //self.manager.startMonitoringVisits()
+        print("OUTPUT startUpdating")
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         lastKnownLocation = locations.last
-        print("didUpdateLocations \(lastKnownLocation)")
+        print("OUTPUT didUpdateLocations \(lastKnownLocation)")
         
         if let location = lastKnownLocation {
             LocationManager.retrievePostalAddress(from: location) { postalAddress in
@@ -48,9 +50,19 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
             }
         }
         
-        self.manager.stopUpdatingLocation()
+        //self.manager.stopUpdatingLocation()
     }
-
+    
+    func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
+        let clLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+        lastKnownLocation = clLocation
+        
+        print("OUTPUT didVisit \(lastKnownLocation)")
+        LocationManager.retrievePostalAddress(from: clLocation) { postalAddress in
+            self.lastKnownDescription = postalAddress
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
             manager.startUpdatingLocation()

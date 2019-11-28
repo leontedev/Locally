@@ -39,7 +39,7 @@ struct MapView: UIViewRepresentable {
     func updateUIView(_ view: MKMapView, context: Context) {
         // 1: don't add Current Location marker if Custom Location marker was added
         // 2: only update the Current Location marker once
-        if !locationManager.shouldEnableCurrentLocationButton && !showedCurrentLocationOnce {
+        if !locationManager.shouldEnableCurrentLocationButton { //&& !showedCurrentLocationOnce {
             
             guard let newLocation = location else { return }
             
