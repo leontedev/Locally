@@ -35,9 +35,16 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         self.manager.delegate = self
         self.manager.requestWhenInUseAuthorization()
         
-        self.manager.startUpdatingLocation()
+        //self.manager.startUpdatingLocation()
         //self.manager.startMonitoringVisits()
         //print("OUTPUT startUpdating")
+        
+        if !CLLocationManager.significantLocationChangeMonitoringAvailable() {
+            self.manager.startMonitoringVisits()
+            return
+        }
+        
+        self.manager.startMonitoringSignificantLocationChanges()
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -61,6 +68,15 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         LocationManager.retrievePostalAddress(from: clLocation) { postalAddress in
             self.lastKnownDescription = postalAddress
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+       if let error = error as? CLError, error.code == .denied {
+          // Location updates are not authorized.
+          manager.stopMonitoringSignificantLocationChanges()
+          return
+       }
+       // Notify the user of any errors.
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
