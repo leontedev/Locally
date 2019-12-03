@@ -49,7 +49,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         lastKnownLocation = locations.last
-        print("OUTPUT didUpdateLocations \(lastKnownLocation)")
+        //print("OUTPUT didUpdateLocations \(lastKnownLocation)")
         
         if let location = lastKnownLocation {
             LocationManager.retrievePostalAddress(from: location) { postalAddress in
