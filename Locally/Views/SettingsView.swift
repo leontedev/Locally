@@ -17,7 +17,7 @@ struct SettingsView: View {
         NavigationView {
             Form {
                 Section(header: Text("Enable the navigation apps you plan to use (max 2)")) {
-                    if (UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!)) {
+                    if !(UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!)) {
                         Toggle(isOn: $settings.isEnabledGoogleMaps) {
                             Text("Google Maps")
                                 .foregroundColor(Color.init("TextNameColor"))
@@ -34,7 +34,7 @@ struct SettingsView: View {
                     .foregroundColor(Color.init("ButtonColor"))
                     .disabled(settings.isEnabledGoogleMaps && settings.isEnabledWaze)
                     
-                    if (UIApplication.shared.canOpenURL(URL(string: "waze://")!)) {
+                    if !(UIApplication.shared.canOpenURL(URL(string: "waze://")!)) {
                         Toggle(isOn: $settings.isEnabledWaze) {
                             Text("Waze")
                                 .foregroundColor(Color.init("TextNameColor"))

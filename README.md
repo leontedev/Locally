@@ -1,11 +1,15 @@
-# Locally - Your Locations Agenda.
+# Locally - Navigation Companion
+**Your Locations Agenda**
+![](https://img.shields.io/badge/ver-1.0+-yellow.svg)
 ![](https://img.shields.io/badge/iOS-13.0+-red.svg)
 ![](https://img.shields.io/badge/Swift-5.1-brightgreen.svg)
 ![https://twitter.com/leonte_dev](https://img.shields.io/badge/Twitter-@leonte_dev-blue.svg?style=flat)
 ![https://www.leonte.dev](https://img.shields.io/badge/Web-leonte.dev-lightgrey.svg?style=flat)
 
-**Quickly save a favorite location. 
-Customize which Navigation app you want to use: Maps, Google Maps or Waze.**
+**Locally is your private, favorite locations repo. Quickly jump into your preferred navigation app, with your choice of transit type.**
+
+![Alt text](./download.svg)
+<img src="./download.svg">
 
 ![](onboard_s.png) ![](main_s.png) ![](add_s.png) ![](settings_s.png)
 
