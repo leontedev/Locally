@@ -8,8 +8,8 @@
 
 **Locally is your private, favorite locations repo. Quickly jump into your preferred navigation app, with your choice of transit type.**
 
-![Alt text](./download.svg)
-<img src="./download.svg">
+![https://apps.apple.com/ro/app/locally-navigation-companion/id1488488997](./download.svg)
+
 
 ![](onboard_s.png) ![](main_s.png) ![](add_s.png) ![](settings_s.png)
 
