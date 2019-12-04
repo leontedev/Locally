@@ -20,4 +20,4 @@
 - CoreData
 - CloudKit
 
-*Check the [Projects tab](https://github.com/leontedev/Locally/projects) for the upcoming features.*
+*Check the [Projects tab](https://github.com/leontedev/Locally/projects) for upcoming features.*
