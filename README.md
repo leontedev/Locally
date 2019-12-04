@@ -1,5 +1,6 @@
 # Locally - Navigation Companion
 **Your Locations Agenda**
+
 ![](https://img.shields.io/badge/ver-1.0+-yellow.svg)
 ![](https://img.shields.io/badge/iOS-13.0+-red.svg)
 ![](https://img.shields.io/badge/Swift-5.1-brightgreen.svg)
@@ -8,8 +9,7 @@
 
 **Locally is your private, favorite locations repo. Quickly jump into your preferred navigation app, with your choice of transit type.**
 
-![https://apps.apple.com/ro/app/locally-navigation-companion/id1488488997](./download.svg)
-
+[![Download App Store](./download.svg)](https://apps.apple.com/ro/app/locally-navigation-companion/id1488488997)
 
 ![](onboard_s.png) ![](main_s.png) ![](add_s.png) ![](settings_s.png)
 
