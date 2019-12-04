@@ -1,5 +1,5 @@
 # Locally - Navigation Companion
-**Your Locations Agenda**
+## Your Locations Agenda
 
 
 [![Version](https://img.shields.io/badge/version-1.0-yellow.svg)](https://github.com/leontedev/Locally)
