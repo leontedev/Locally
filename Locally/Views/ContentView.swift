@@ -55,7 +55,7 @@ struct ContentView: View {
                             MapView(locationManager: self.locationManager, location: self.$locationManager.lastKnownLocation)
                                 .frame(height: reader.size.height / 2)
 
-                            if self.locationManager.shouldEnableCurrentLocationButton {
+                            //if self.locationManager.shouldEnableCurrentLocationButton {
                                 VStack(spacing: 0) {
                                     // MARK: Settings Button
                                     Button(action: {
@@ -76,7 +76,7 @@ struct ContentView: View {
                                     
                                     // MARK: Current Location Button
                                     Button(action: {
-                                        self.locationManager.startUpdating()
+                                        self.locationManager.preciseLocationUpdateBurst()
                                         self.locationManager.shouldEnableCurrentLocationButton = false
                                     }) {
                                         Image(systemName: "location.north.fill").font(Font.body.weight(.heavy))
@@ -87,16 +87,16 @@ struct ContentView: View {
                                 }//.shadow(radius: 6) // I had to comment out the shadow view modifer - as it was causing weird glitches (the tap gestures were going "through" the button down to the MapView)
                                 .cornerRadius(10)
                                 .offset(x: -reader.size.width / 2.6, y: -reader.size.height / 7.5)
-                            } else {
-                                // MARK: Settings Button
-                                SettingsButton(showSheet: self.$showSettingsSheet)
-                                    .sheet(isPresented: self.$showSettingsSheet, content: {
-                                        SettingsView(settings: self.settings) })
-                                    // FIXME: Not working
-                                    .frame(width: reader.size.height)
-                                    //.shadow(radius: 6)
-                                    .offset(x: -reader.size.width / 2.6, y: -reader.size.height / 6)
-                            }
+//                            } else {
+//                                // MARK: Settings Button
+//                                SettingsButton(showSheet: self.$showSettingsSheet)
+//                                    .sheet(isPresented: self.$showSettingsSheet, content: {
+//                                        SettingsView(settings: self.settings) })
+//                                    // FIXME: Not working
+//                                    .frame(width: reader.size.height)
+//                                    //.shadow(radius: 6)
+//                                    .offset(x: -reader.size.width / 2.6, y: -reader.size.height / 6)
+//                            }
 
 
                             // MARK: Save button
@@ -261,23 +261,32 @@ struct NavigationMenu: View {
     
     private let googleMapsTypes = ["driving", "transit", "walking"]
     private let appleMapsTypes = ["d", "r", "w"]
-    private let buttonLabels = ["Go", "Google Maps", "Apple Maps", "Waze"]
+    private let buttonLabels = ["Go", "Google Maps", " Maps", "Waze", "Uber", "Lyft"]
     
 
     @ViewBuilder var body: some View {
         HStack {
             if settings.isEnabledGoogleMaps {
-                NavigationButton(name: (settings.isEnabledAppleMaps || settings.isEnabledWaze) ? buttonLabels[1] : buttonLabels[0], urlString: "https://www.google.com/maps/dir/?api=1&destination=\(latitude),\(longitude)&travelmode=\(self.googleMapsTypes[self.settings.transitType])")
+                NavigationButton(name: settings.enabledCount > 1 ? buttonLabels[1] : buttonLabels[0], urlString: "https://www.google.com/maps/dir/?api=1&destination=\(latitude),\(longitude)&travelmode=\(self.googleMapsTypes[self.settings.transitType])")
                 
             }
             //"comgooglemaps://?daddr=\(latitude),\(longitude)&directionsmode=\(self.googleMapsTypes[self.settings.transitType])"
             
             
             if settings.isEnabledAppleMaps {
-                NavigationButton(name: (settings.isEnabledGoogleMaps || settings.isEnabledWaze) ? buttonLabels[2] : buttonLabels[0], urlString: "http://maps.apple.com/?daddr=\(latitude),\(longitude)&dirflg=\(self.appleMapsTypes[self.settings.transitType])")
+                NavigationButton(name: settings.enabledCount > 1 ? buttonLabels[2] : buttonLabels[0], urlString: "http://maps.apple.com/?daddr=\(latitude),\(longitude)&dirflg=\(self.appleMapsTypes[self.settings.transitType])")
             }
+            
             if settings.isEnabledWaze {
-                NavigationButton(name: (settings.isEnabledAppleMaps || settings.isEnabledGoogleMaps) ? buttonLabels[3] : buttonLabels[0], urlString: "waze://?ll=\(latitude),\(longitude)&navigate=yes&zoom=17")
+                NavigationButton(name: settings.enabledCount > 1 ? buttonLabels[3] : buttonLabels[0], urlString: "waze://?ll=\(latitude),\(longitude)&navigate=yes&zoom=17")
+            }
+            
+            if settings.isEnabledUber {
+                NavigationButton(name: settings.enabledCount > 1 ? buttonLabels[4] : buttonLabels[0], urlString: "uber://?action=setPickup&dropoff[latitude]=\(latitude)&dropoff[longitude]=\(longitude)")
+            }
+            
+            if settings.isEnabledLyft {
+                NavigationButton(name: settings.enabledCount > 1 ? buttonLabels[5] : buttonLabels[0], urlString: "lyft://ridetype?id=lyft&destination[latitude]=\(latitude)&destination[longitude]=\(longitude)")
             }
         }
         

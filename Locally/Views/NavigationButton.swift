@@ -17,8 +17,8 @@ struct NavigationButton: View {
             UIApplication.shared.open(URL(string: self.urlString)!)
         }) {
             Text(name)
-                .font(name.count > 2 ? .caption : .callout)
-                .fontWeight(name.count > 2 ? Font.Weight.regular : .heavy)
+                .font(name.count > 2 ? .caption : .body)
+                .fontWeight(name.count > 2 ? Font.Weight.bold : .black)
                 .foregroundColor(Color.init("TextAccentColor"))
         }
         .multilineTextAlignment(.center)

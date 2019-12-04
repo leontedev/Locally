@@ -35,29 +35,32 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         self.manager.delegate = self
         self.manager.requestWhenInUseAuthorization()
         
-        //self.manager.startUpdatingLocation()
-        //self.manager.startMonitoringVisits()
-        //print("OUTPUT startUpdating")
-        
         if !CLLocationManager.significantLocationChangeMonitoringAvailable() {
             self.manager.startMonitoringVisits()
             return
         }
         
         self.manager.startMonitoringSignificantLocationChanges()
+        
+        preciseLocationUpdateBurst()
+    }
+    
+    func preciseLocationUpdateBurst() {
+        self.manager.startUpdatingLocation()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.manager.stopUpdatingLocation()
+        }
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         lastKnownLocation = locations.last
-        //print("OUTPUT didUpdateLocations \(lastKnownLocation)")
         
         if let location = lastKnownLocation {
             LocationManager.retrievePostalAddress(from: location) { postalAddress in
                 self.lastKnownDescription = postalAddress
             }
         }
-        
-        //self.manager.stopUpdatingLocation()
     }
     
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
@@ -81,7 +84,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
-            manager.startUpdatingLocation()
+            //manager.startUpdatingLocation()
+            startUpdating()
         }
     }
 }

@@ -17,31 +17,50 @@ struct SettingsView: View {
         NavigationView {
             Form {
                 Section(header: Text("Enable the navigation apps you plan to use (max 2)")) {
-                    if !(UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!)) {
+                    if (UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!)) {
                         Toggle(isOn: $settings.isEnabledGoogleMaps) {
                             Text("Google Maps")
                                 .foregroundColor(Color.init("TextNameColor"))
                         }
                         .padding(4.0)
-                        .disabled(settings.isEnabledWaze && settings.isEnabledAppleMaps)
+                        .disabled(settings.enabledCount >= 2 && !settings.isEnabledGoogleMaps)
                     }
                     
                     Toggle(isOn: $settings.isEnabledAppleMaps) {
-                        Text("Apple Maps")
+                        Text(" Maps")
                             .foregroundColor(Color.init("TextNameColor"))
                         }
                     .padding(4.0)
                     .foregroundColor(Color.init("ButtonColor"))
-                    .disabled(settings.isEnabledGoogleMaps && settings.isEnabledWaze)
+                    .disabled(settings.enabledCount >= 2 && !settings.isEnabledAppleMaps)
                     
-                    if !(UIApplication.shared.canOpenURL(URL(string: "waze://")!)) {
+                    if (UIApplication.shared.canOpenURL(URL(string: "waze://")!)) {
                         Toggle(isOn: $settings.isEnabledWaze) {
                             Text("Waze")
                                 .foregroundColor(Color.init("TextNameColor"))
                         }
                         .padding(4.0)
-                        .disabled(settings.isEnabledGoogleMaps && settings.isEnabledAppleMaps)
+                        .disabled(settings.enabledCount >= 2 && !settings.isEnabledWaze)
                     }
+                    
+                    if (UIApplication.shared.canOpenURL(URL(string: "uber://")!)) {
+                        Toggle(isOn: $settings.isEnabledUber) {
+                            Text("Uber")
+                                .foregroundColor(Color.init("TextNameColor"))
+                        }
+                        .padding(4.0)
+                        .disabled(settings.enabledCount >= 2  && !settings.isEnabledUber)
+                    }
+                    
+                    if (UIApplication.shared.canOpenURL(URL(string: "lyft://")!)) {
+                        Toggle(isOn: $settings.isEnabledLyft) {
+                            Text("Lyft")
+                                .foregroundColor(Color.init("TextNameColor"))
+                        }
+                        .padding(4.0)
+                        .disabled(settings.enabledCount >= 2 && !settings.isEnabledLyft)
+                    }
+                    
                 }
                 
                 Section {
