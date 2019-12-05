@@ -64,7 +64,7 @@ struct ContentView: View {
                                         Image(systemName: "gear").font(Font.body.weight(.heavy))
                                     }
                                     .sheet(isPresented: self.$showSettingsSheet, content: {
-                                        SettingsView(settings: self.settings) })
+                                        SettingsView(settings: self.settings, locationManager: self.locationManager) })
                                     .accentColor(Color.init("TextAccentColor"))
                                     .frame(width: reader.size.height / 14, height: reader.size.height / 14)
                                     .background(Color.init("ButtonColor"))

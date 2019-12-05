@@ -12,6 +12,8 @@ import StoreKit
 struct SettingsView: View {
     @ObservedObject var settings: Settings
     @Environment(\.presentationMode) var presentationMode
+    @State private var showShareSheet = false
+    var locationManager: LocationManager
 
     var body: some View {
         NavigationView {
@@ -62,6 +64,32 @@ struct SettingsView: View {
                     }
                     
                 }
+                
+                Section {
+                    Button(action: {
+                        self.showShareSheet = true
+                    }) {
+                        HStack {
+                            Image(systemName: "square.and.arrow.up")
+                                .font(.title)
+                                .frame(width: 50)
+                                .foregroundColor(Color.init("ButtonColor"))
+                            
+                            VStack(alignment: .leading) {
+                                Text("Share Location")
+                                    .font(.headline)
+                                    .foregroundColor(Color.init("ButtonColor"))
+                                
+                                Text("Share current address and coordinates")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                    }.padding(.vertical)
+                }
+                .sheet(isPresented: $showShareSheet) {
+                ShareSheet(activityItems: [self.locationManager.lastKnownDescription, "\nLat: \(self.locationManager.lastKnownLocation?.coordinate.latitude ?? 0)\nLong: \(self.locationManager.lastKnownLocation?.coordinate.longitude ?? 0)"])}
+                
                 
                 Section {
                     Button(action: {
@@ -164,8 +192,8 @@ struct SettingsView: View {
     
 }
 
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView(settings: Settings())
-    }
-}
+//struct SettingsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SettingsView(settings: Settings())
+//    }
+//}
