@@ -20,13 +20,14 @@ struct NavigationButton: View {
                 .font(name.count > 2 ? .caption : .body)
                 .fontWeight(name.count > 2 ? Font.Weight.bold : .black)
                 .foregroundColor(Color.init("TextAccentColor"))
+                .multilineTextAlignment(.center)
+                .frame(minWidth: 60, maxWidth:60, minHeight: 50, maxHeight: 50)
+                .padding(5)
+                .background(Color.init("ButtonColor"))
+                .cornerRadius(10)
+                .padding(5) // spaceing from outter elements
         }
-        .multilineTextAlignment(.center)
-        .frame(minWidth: 60, maxWidth:60, minHeight: 50, maxHeight: 50)
-        .padding(5)
-        .background(Color.init("ButtonColor"))
-        .cornerRadius(10)
-        .padding(5) // spaceing from outter elements
+        
     }
 }
 

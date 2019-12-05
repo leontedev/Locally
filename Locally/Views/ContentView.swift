@@ -62,12 +62,13 @@ struct ContentView: View {
                                         self.showSettingsSheet = true
                                     }) {
                                         Image(systemName: "gear").font(Font.body.weight(.heavy))
+                                            .accentColor(Color.init("TextAccentColor"))
+                                            .frame(width: reader.size.height / 14, height: reader.size.height / 14)
+                                            .background(Color.init("ButtonColor"))
                                     }
                                     .sheet(isPresented: self.$showSettingsSheet, content: {
                                         SettingsView(settings: self.settings, locationManager: self.locationManager) })
-                                    .accentColor(Color.init("TextAccentColor"))
-                                    .frame(width: reader.size.height / 14, height: reader.size.height / 14)
-                                    .background(Color.init("ButtonColor"))
+                                    
 
                                     Rectangle()
                                         .foregroundColor(Color.init("TextAccentColor"))
@@ -80,10 +81,10 @@ struct ContentView: View {
                                         self.locationManager.shouldEnableCurrentLocationButton = false
                                     }) {
                                         Image(systemName: "location.north.fill").font(Font.body.weight(.heavy))
+                                            .accentColor(Color.init("TextAccentColor"))
+                                            .frame(width: reader.size.height / 14, height: reader.size.height / 14)
+                                            .background(Color.init("ButtonColor"))
                                     }
-                                    .accentColor(Color.init("TextAccentColor"))
-                                    .frame(width: reader.size.height / 14, height: reader.size.height / 14)
-                                    .background(Color.init("ButtonColor"))
                                 }//.shadow(radius: 6) // I had to comment out the shadow view modifer - as it was causing weird glitches (the tap gestures were going "through" the button down to the MapView)
                                 .cornerRadius(10)
                                 .offset(x: -reader.size.width / 2.6, y: -reader.size.height / 7.5)
@@ -227,13 +228,14 @@ struct AddButton: View {
                 Image(systemName: "location.circle")
                 Text("Save")
             }
+            .accentColor(Color.init("TextAccentColor"))
+            .frame(minWidth: 0, maxWidth: 80)
+            .padding()
+            .background(Color.init("ButtonColor"))
+            .cornerRadius(10)
+            .padding()
         }
-        .accentColor(Color.init("TextAccentColor"))
-        .frame(minWidth: 0, maxWidth: 80)
-        .padding()
-        .background(Color.init("ButtonColor"))
-        .cornerRadius(10)
-        .padding()
+        
     }
 }
 
@@ -245,12 +247,13 @@ struct SettingsButton: View {
             self.showSheet = true
         }) {
             Image(systemName: "gear").font(Font.body.weight(.heavy))
+                .accentColor(Color.init("TextAccentColor"))
+                .padding()
+                .background(Color.init("ButtonColor"))
+                .cornerRadius(10)
+                .padding()
         }
-        .accentColor(Color.init("TextAccentColor"))
-        .padding()
-        .background(Color.init("ButtonColor"))
-        .cornerRadius(10)
-        .padding()
+        
     }
 }
 
