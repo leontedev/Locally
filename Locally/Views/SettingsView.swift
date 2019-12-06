@@ -93,7 +93,7 @@ struct SettingsView: View {
                 
                 Section {
                     Button(action: {
-                        guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/idXXXXXXXXXX?action=write-review")
+                        guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1488488997?action=write-review")
                             else { fatalError("Expected a valid URL") }
                         UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
                     }) {

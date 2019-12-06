@@ -8,12 +8,12 @@
 
 import SwiftUI
 import StoreKit
+import CoreLocation
+
 
 struct ContentView: View {
     @ObservedObject var locationManager = LocationManager()
     @ObservedObject var settings = Settings()
-    
-    //@ObservedObject var locations = Locations()
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(entity: Location.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Location.date, ascending: false)]) var locations: FetchedResults<Location>
     
@@ -22,17 +22,8 @@ struct ContentView: View {
     @State private var type = 0
     
     @State private var onboardingTapsCounter = 0
+    @State private var mapState: MapState = .currentLocation
     
-    func removeItems(at offsets: IndexSet) {
-        //locations.items.remove(atOffsets: offsets)
-        for offset in offsets {
-            let loc = locations[offset]
-            moc.delete(loc)
-        }
-        if moc.hasChanges {
-            try? moc.save()
-        }
-    }
     
     var body: some View {
         
@@ -51,59 +42,53 @@ struct ContentView: View {
                 GeometryReader { reader in
                     VStack {
                         ZStack {
+                            
                             // MARK: MapView
-                            MapView(locationManager: self.locationManager, location: self.$locationManager.lastKnownLocation)
+                            MapView(locationManager: self.locationManager,
+                                    location: self.$locationManager.lastKnownLocation,
+                                    mapState: self.$mapState)
                                 .frame(height: reader.size.height / 2)
 
-                            //if self.locationManager.shouldEnableCurrentLocationButton {
-                                VStack(spacing: 0) {
-                                    // MARK: Settings Button
-                                    Button(action: {
-                                        self.showSettingsSheet = true
-                                    }) {
-                                        Image(systemName: "gear").font(Font.body.weight(.heavy))
-                                            .accentColor(Color.init("TextAccentColor"))
-                                            .frame(width: reader.size.height / 14, height: reader.size.height / 14)
-                                            .background(Color.init("ButtonColor"))
-                                    }
-                                    .sheet(isPresented: self.$showSettingsSheet, content: {
-                                        SettingsView(settings: self.settings, locationManager: self.locationManager) })
-                                    
+                            
+                            VStack(spacing: 0) {
+                                
+                                // MARK: Settings Button
+                                Button(action: {
+                                    self.showSettingsSheet = true
+                                }) {
+                                    Image(systemName: "gear").font(Font.body.weight(.heavy))
+                                        .accentColor(Color.init("TextAccentColor"))
+                                        .frame(width: reader.size.height / 14, height: reader.size.height / 14)
+                                        .background(Color.init("ButtonColor"))
+                                }
+                                .sheet(isPresented: self.$showSettingsSheet, content: {
+                                    SettingsView(settings: self.settings, locationManager: self.locationManager) })
+                                
 
-                                    Rectangle()
-                                        .foregroundColor(Color.init("TextAccentColor"))
-                                        .frame(width:reader.size.height / 14, height:1)
-                                        .fixedSize()
-                                    
-                                    // MARK: Current Location Button
-                                    Button(action: {
-                                        self.locationManager.preciseLocationUpdateBurst()
-                                        self.locationManager.shouldEnableCurrentLocationButton = false
-                                    }) {
-                                        Image(systemName: "location.north.fill").font(Font.body.weight(.heavy))
-                                            .accentColor(Color.init("TextAccentColor"))
-                                            .frame(width: reader.size.height / 14, height: reader.size.height / 14)
-                                            .background(Color.init("ButtonColor"))
-                                    }
-                                }//.shadow(radius: 6) // I had to comment out the shadow view modifer - as it was causing weird glitches (the tap gestures were going "through" the button down to the MapView)
-                                .cornerRadius(10)
-                                .offset(x: -reader.size.width / 2.6, y: -reader.size.height / 7.5)
-//                            } else {
-//                                // MARK: Settings Button
-//                                SettingsButton(showSheet: self.$showSettingsSheet)
-//                                    .sheet(isPresented: self.$showSettingsSheet, content: {
-//                                        SettingsView(settings: self.settings) })
-//                                    // FIXME: Not working
-//                                    .frame(width: reader.size.height)
-//                                    //.shadow(radius: 6)
-//                                    .offset(x: -reader.size.width / 2.6, y: -reader.size.height / 6)
-//                            }
+                                Rectangle()
+                                    .foregroundColor(Color.init("TextAccentColor"))
+                                    .frame(width:reader.size.height / 14, height:1)
+                                    .fixedSize()
+                                
+                                // MARK: Current Location Button
+                                Button(action: {
+                                    self.mapState = .currentLocation
+                                    self.locationManager.preciseLocationUpdateBurst()
+                                }) {
+                                    Image(systemName: "location.north.fill").font(Font.body.weight(.heavy))
+                                        .accentColor(Color.init("TextAccentColor"))
+                                        .frame(width: reader.size.height / 14, height: reader.size.height / 14)
+                                        .background(Color.init("ButtonColor"))
+                                }
+                            }
+                            .cornerRadius(10)
+                            .offset(x: -reader.size.width / 2.6, y: -reader.size.height / 7.5)
 
 
                             // MARK: Save button
                             AddButton(showSheet: self.$showAddSheet)
                                 .sheet(isPresented: self.$showAddSheet, content: {
-                                    AddLocation(location: self.locationManager)
+                                    AddLocation(location: self.locationManager, state: self.mapState)
                                         .environment(\.managedObjectContext, self.moc)
                                 })
                                 .shadow(radius: 6)
@@ -119,7 +104,7 @@ struct ContentView: View {
                                 .padding(.top, 40.0)
                         }
 
-                        // If only Waze is displayed - don't display the Picker (as it's not available)
+                        // Transit parameters are available just for Google Maps and Apple Maps (don't display the Picker for the rest)
                         if (self.settings.isEnabledAppleMaps || self.settings.isEnabledGoogleMaps) && !self.locations.isEmpty {
                             Picker("Type", selection: self.$settings.transitType) {
                                     Image(systemName: "car.fill").tag(0)
@@ -159,11 +144,12 @@ struct ContentView: View {
                                 .cornerRadius(16)
                                 .clipped()
                                 .shadow(radius: 1)
-
+                                .onTapGesture {
+                                    self.mapState = .savedLocation(location)
+                                }
                             }
                             .onDelete(perform: self.removeItems)
                             .buttonStyle(PlainButtonStyle())
-
                         }.frame(maxWidth: reader.size.width)
 
 
@@ -208,6 +194,17 @@ struct ContentView: View {
 
                 })
             }
+    }
+    
+    func removeItems(at offsets: IndexSet) {
+        //locations.items.remove(atOffsets: offsets)
+        for offset in offsets {
+            let loc = locations[offset]
+            moc.delete(loc)
+        }
+        if moc.hasChanges {
+            try? moc.save()
+        }
     }
 }
 

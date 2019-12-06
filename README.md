@@ -14,12 +14,19 @@
 
 ![](onboard_s.png) ![](main_s.png) ![](add_s.png) ![](settings_s.png)
 
+## Version 1.2
+- Tap location in the List view to show on map
+- Fixed an issue with CloudKit syncing preventing the server to push items to the app
+- Fixed App Store Review button
+- Enlarged the hit area for all buttons
 
 ## Version 1.1
 - Added Uber & Lyft navigation options
 - Share Current Location (address & coordinates)
 - Improvement to Current Location localization:
 The app monitors "SignificantLocationChanges" to preserve battery life. However pressing the "Current Location" button will kick off the regular, and more precise startUpdatingLocation() function for 5 seconds. 
+
+
 
 **Technologies used:**
 - SwiftUI

@@ -13,6 +13,7 @@
 		8946655B2371C7E100932E43 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946655A2371C7E100932E43 /* SettingsView.swift */; };
 		8946655D2371D28F00932E43 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946655C2371D28F00932E43 /* Settings.swift */; };
 		896BFE652398F2D2003DD4C1 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896BFE642398F2D2003DD4C1 /* ShareSheet.swift */; };
+		896BFE69239AAB1F003DD4C1 /* MapState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896BFE68239AAB1F003DD4C1 /* MapState.swift */; };
 		898C0346236B29360044E0D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0345236B29360044E0D5 /* AppDelegate.swift */; };
 		898C0348236B29360044E0D5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0347236B29360044E0D5 /* SceneDelegate.swift */; };
 		898C034B236B29370044E0D5 /* Locally.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 898C0349236B29370044E0D5 /* Locally.xcdatamodeld */; };
@@ -21,8 +22,6 @@
 		898C0352236B293B0044E0D5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 898C0351236B293B0044E0D5 /* Preview Assets.xcassets */; };
 		898C0355236B293B0044E0D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 898C0353236B293B0044E0D5 /* LaunchScreen.storyboard */; };
 		898C035F236B2AA50044E0D5 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 898C035E236B2AA50044E0D5 /* CloudKit.framework */; };
-		898C0363236B2ECC0044E0D5 /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0362236B2ECC0044E0D5 /* Locations.swift */; };
-		898C0365236B2F060044E0D5 /* LocationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0364236B2F060044E0D5 /* LocationItem.swift */; };
 		898C0367236B2FEC0044E0D5 /* AddLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0366236B2FEC0044E0D5 /* AddLocation.swift */; };
 		898C0369236B32590044E0D5 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898C0368236B32590044E0D5 /* MapView.swift */; };
 		89AE98852375B7B6007B6C04 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89AE98842375B7B6007B6C04 /* OnboardingView.swift */; };
@@ -36,6 +35,7 @@
 		8946655A2371C7E100932E43 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8946655C2371D28F00932E43 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		896BFE642398F2D2003DD4C1 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
+		896BFE68239AAB1F003DD4C1 /* MapState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapState.swift; sourceTree = "<group>"; };
 		898C0342236B29360044E0D5 /* Locally.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Locally.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		898C0345236B29360044E0D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		898C0347236B29360044E0D5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,8 +47,6 @@
 		898C0356236B293B0044E0D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		898C035C236B2AA10044E0D5 /* Locally.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Locally.entitlements; sourceTree = "<group>"; };
 		898C035E236B2AA50044E0D5 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
-		898C0362236B2ECC0044E0D5 /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
-		898C0364236B2F060044E0D5 /* LocationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationItem.swift; sourceTree = "<group>"; };
 		898C0366236B2FEC0044E0D5 /* AddLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocation.swift; sourceTree = "<group>"; };
 		898C0368236B32590044E0D5 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		89AE98842375B7B6007B6C04 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -121,9 +119,8 @@
 			isa = PBXGroup;
 			children = (
 				8946655823719AEA00932E43 /* LocationManager.swift */,
-				898C0364236B2F060044E0D5 /* LocationItem.swift */,
-				898C0362236B2ECC0044E0D5 /* Locations.swift */,
 				8946655C2371D28F00932E43 /* Settings.swift */,
+				896BFE68239AAB1F003DD4C1 /* MapState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -224,9 +221,8 @@
 				8946655D2371D28F00932E43 /* Settings.swift in Sources */,
 				896BFE652398F2D2003DD4C1 /* ShareSheet.swift in Sources */,
 				89AE98852375B7B6007B6C04 /* OnboardingView.swift in Sources */,
+				896BFE69239AAB1F003DD4C1 /* MapState.swift in Sources */,
 				8942D9E623843F4600F8C613 /* NavigationButton.swift in Sources */,
-				898C0365236B2F060044E0D5 /* LocationItem.swift in Sources */,
-				898C0363236B2ECC0044E0D5 /* Locations.swift in Sources */,
 				898C0348236B29360044E0D5 /* SceneDelegate.swift in Sources */,
 				89D1DC0E237B06ED0081D26F /* PlayGroundView.swift in Sources */,
 				898C0367236B2FEC0044E0D5 /* AddLocation.swift in Sources */,
@@ -373,11 +369,12 @@
 				DEVELOPMENT_TEAM = V7S7GB28P7;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Locally/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.leonte.Locally;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -396,11 +393,12 @@
 				DEVELOPMENT_TEAM = V7S7GB28P7;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Locally/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.leonte.Locally;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

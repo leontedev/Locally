@@ -14,6 +14,7 @@ struct AddLocation: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var location: LocationManager
+    var state: MapState
     
     @State private var name = ""
     @State private var showAlert = false
@@ -25,40 +26,27 @@ struct AddLocation: View {
                 //TextField("Name", text: $name)
                 AutoFocusTextField(text: $name)
                 
-                Text(location.shouldEnableCurrentLocationButton ? location.lastKnownCustomDescription ?? "" : location.lastKnownDescription ?? "")
+                Text((self.state == MapState.currentLocation) ? location.lastKnownDescription ?? "" : location.lastKnownCustomDescription ?? "")
                     .font(.caption)
                     .foregroundColor(Color.gray)
                 
-                Text("Lat: \(location.shouldEnableCurrentLocationButton ? Double(location.lastKnownCustomLocation?.coordinate.latitude ?? 0) : Double(location.lastKnownLocation?.coordinate.latitude ?? 0)), Long: \(location.shouldEnableCurrentLocationButton ? Double(location.lastKnownCustomLocation?.coordinate.longitude ?? 0) : Double(location.lastKnownLocation?.coordinate.longitude ?? 0))")
+                Text("Lat: \((self.state == MapState.currentLocation) ? Double(location.lastKnownLocation?.coordinate.latitude ?? 0) : Double(location.lastKnownCustomLocation?.coordinate.latitude ?? 0)), Long: \((self.state == MapState.currentLocation) ? Double(location.lastKnownLocation?.coordinate.longitude ?? 0) : Double(location.lastKnownCustomLocation?.coordinate.longitude ?? 0))")
                     .font(.caption)
                     .foregroundColor(Color.gray)
             }
             .navigationBarTitle("Save Locally")
             .navigationBarItems(trailing: Button("Save") {
                 if self.name != "" {
-                    
-//                    if self.location.shouldEnableCurrentLocationButton {
-//                        let item = LocationItem(name: self.name,
-//                                                latitude: Double(self.location.lastKnownCustomLocation?.coordinate.latitude ?? 0),
-//                                                longitude: Double(self.location.lastKnownCustomLocation?.coordinate.longitude ?? 0),
-//                                                date: Date(),
-//                                                description: self.location.lastKnownCustomDescription ?? "Unknown")
-//                        self.locations.items.append(item)
-//                    } else {
-//                        let item = LocationItem(name: self.name,
-//                                                latitude: Double(self.location.lastKnownLocation?.coordinate.latitude ?? 0),
-//                                                longitude: Double(self.location.lastKnownLocation?.coordinate.longitude ?? 0),
-//                                                date: Date(),
-//                                                description: self.location.lastKnownDescription ?? "Unknown")
-//                        self.locations.items.append(item)
-//                    }
-                    
                     let newLocation = Location(context: self.moc)
                     newLocation.name = self.name
-                    newLocation.latitude = self.location.shouldEnableCurrentLocationButton ? Double(self.location.lastKnownCustomLocation?.coordinate.latitude ?? 0) : Double(self.location.lastKnownLocation?.coordinate.latitude ?? 0)
-                    newLocation.longitude = self.location.shouldEnableCurrentLocationButton ? Double(self.location.lastKnownCustomLocation?.coordinate.longitude ?? 0) : Double(self.location.lastKnownLocation?.coordinate.longitude ?? 0)
+
+                    newLocation.latitude = (self.state == MapState.currentLocation) ? Double(self.location.lastKnownLocation?.coordinate.latitude ?? 0) : Double(self.location.lastKnownCustomLocation?.coordinate.latitude ?? 0)
+                    
+                    newLocation.longitude = (self.state == MapState.currentLocation) ? Double(self.location.lastKnownLocation?.coordinate.longitude ?? 0) : Double(self.location.lastKnownCustomLocation?.coordinate.longitude ?? 0)
+                    
                     newLocation.date = Date()
-                    newLocation.address = self.location.shouldEnableCurrentLocationButton ? self.location.lastKnownCustomDescription ?? "Unknown" : self.location.lastKnownDescription ?? "Unknown"
+                    
+                    newLocation.address = (self.state == MapState.currentLocation) ? self.location.lastKnownDescription ?? "Unknown" : self.location.lastKnownCustomDescription ?? "Unknown"
                     
                     if self.moc.hasChanges {
                         try? self.moc.save()
