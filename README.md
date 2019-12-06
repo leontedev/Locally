@@ -15,7 +15,9 @@
 ![](onboard_s.png) ![](main_s.png) ![](add_s.png) ![](settings_s.png)
 
 ## Version 1.2
-- Tap location in the List view to show on map
+- Improved Marker redrawing for current location updates (redraws only when necessary)
+- Refactoring of the map state for tracking the 3 types of markers that can be placed on the map (current location, custom location & saved location)
+- Tap location in the List view to show on map (place marker)
 - Fixed an issue with CloudKit syncing preventing the server to push items to the app
 - Fixed App Store Review button
 - Enlarged the hit area for all buttons
