@@ -19,6 +19,7 @@ struct ContentView: View {
     
     @State private var showAddSheet = false
     @State private var showSettingsSheet = false
+    @State private var showEditSheet = false
     @State private var type = 0
     
     @State private var onboardingTapsCounter = 0
@@ -48,7 +49,7 @@ struct ContentView: View {
                                     location: self.$locationManager.lastKnownLocation,
                                     mapState: self.$mapState)
                                 .frame(height: reader.size.height / 2)
-
+                            
                             
                             VStack(spacing: 0) {
                                 
@@ -93,6 +94,12 @@ struct ContentView: View {
                                 })
                                 .shadow(radius: 6)
                                 .offset(x: reader.size.width / 3, y: reader.size.height / 5)
+                            
+                            // MARK: Detail Location View
+//                            Rectangle()
+//                                .fill(Color.init("CellColor"))
+//                                .frame(width: reader.size.width / 3, height: reader.size.width / 3)
+//                                .offset(x: reader.size.width / 2, y: reader.size.width / 2)
                         }
 
                         Divider()
@@ -145,7 +152,38 @@ struct ContentView: View {
                                 .clipped()
                                 .shadow(radius: 1)
                                 .onTapGesture {
-                                    self.mapState = .savedLocation(location)
+                                    self.showOnMap(location: location)
+                                }
+                                .contextMenu {
+                                    Button(action: {
+                                        self.showOnMap(location: location)
+                                    }) {
+                                        HStack {
+                                            Text("Show on Map")
+                                            Image(systemName: "mappin.and.ellipse")
+                                        }
+                                    }
+                                    
+                                    Button(action: {
+                                        self.showEditSheet = true
+                                    }) {
+                                        HStack {
+                                            Text("Edit Name")
+                                            Image(systemName: "pencil")
+                                        }
+                                    }.sheet(isPresented: self.$showEditSheet) {
+                                        EditLocation(location: location)
+                                            .environment(\.managedObjectContext, self.moc)
+                                    }
+                                    
+                                    Button(action: {
+                                        self.removeItem(item: location)
+                                    }) {
+                                        HStack {
+                                            Text("Delete")
+                                            Image(systemName: "trash")
+                                        }
+                                    }.foregroundColor(.red)
                                 }
                             }
                             .onDelete(perform: self.removeItems)
@@ -205,6 +243,18 @@ struct ContentView: View {
         if moc.hasChanges {
             try? moc.save()
         }
+    }
+    
+    func removeItem(item: Location) {
+        moc.delete(item)
+        
+        if moc.hasChanges {
+            try? moc.save()
+        }
+    }
+    
+    func showOnMap(location: Location) {
+        self.mapState = .savedLocation(location)
     }
 }
 

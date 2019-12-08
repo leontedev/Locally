@@ -10,6 +10,7 @@ import SwiftUI
 
 struct AutoFocusTextField: UIViewRepresentable {
     @Binding var text: String
+    var placeholder: String
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -17,7 +18,7 @@ struct AutoFocusTextField: UIViewRepresentable {
 
     func makeUIView(context: UIViewRepresentableContext<AutoFocusTextField>) -> UITextField {
         let textField = UITextField()
-        textField.placeholder = "Location Name"
+        textField.placeholder = placeholder
         textField.delegate = context.coordinator
         return textField
     }
