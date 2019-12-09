@@ -64,6 +64,7 @@ struct ContentView: View {
                                 }
                                 .sheet(isPresented: self.$showSettingsSheet, content: {
                                     SettingsView(settings: self.settings, locationManager: self.locationManager) })
+                                .accessibility(label: Text("Settings"))
                                 
 
                                 Rectangle()
@@ -81,6 +82,7 @@ struct ContentView: View {
                                         .frame(width: reader.size.height / 14, height: reader.size.height / 14)
                                         .background(Color.init("ButtonColor"))
                                 }
+                                .accessibility(label: Text("Place Marker on Current Location"))
                             }
                             .cornerRadius(10)
                             .offset(x: -reader.size.width / 2.6, y: -reader.size.height / 7.5)
@@ -94,12 +96,13 @@ struct ContentView: View {
                                 })
                                 .shadow(radius: 6)
                                 .offset(x: reader.size.width / 3, y: reader.size.height / 5)
+                                
                             
                             // MARK: Detail Location View
-//                            Rectangle()
+//                            RoundedRectangle(cornerRadius: 15, style: .continuous)
 //                                .fill(Color.init("CellColor"))
-//                                .frame(width: reader.size.width / 3, height: reader.size.width / 3)
-//                                .offset(x: reader.size.width / 2, y: reader.size.width / 2)
+//                                .frame(width: reader.size.width / 2, height: reader.size.width / 1.5)
+//                                .offset(x: reader.size.width / 5)
                         }
 
                         Divider()
@@ -112,8 +115,9 @@ struct ContentView: View {
                         }
 
                         // Transit parameters are available just for Google Maps and Apple Maps (don't display the Picker for the rest)
+                        // FIXME: Accessibility for the Picker control
                         if (self.settings.isEnabledAppleMaps || self.settings.isEnabledGoogleMaps) && !self.locations.isEmpty {
-                            Picker("Type", selection: self.$settings.transitType) {
+                            Picker(selection: self.$settings.transitType, label: Text("Select Navigation Type")) {
                                     Image(systemName: "car.fill").tag(0)
                                     Image(systemName: "tram.fill").tag(1)
                                     Image(systemName: "person.fill").tag(2)
@@ -281,7 +285,7 @@ struct AddButton: View {
             .background(Color.init("ButtonColor"))
             .cornerRadius(10)
             .padding()
-        }
+        }.accessibility(label: Text("Save Marker's Location"))
         
     }
 }
