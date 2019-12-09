@@ -1,6 +1,6 @@
 # Locally - Navigation Companion
 
-[![Version](https://img.shields.io/badge/version-1.1-yellow.svg)](https://github.com/leontedev/Locally)
+[![Version](https://img.shields.io/badge/version-1.2-yellow.svg)](https://github.com/leontedev/Locally)
 [![iOS Version](https://img.shields.io/badge/iOS-13.0+-red.svg)](https://github.com/leontedev/Locally)
 [![Swift Version](https://img.shields.io/badge/Swift-5.1-brightgreen.svg)](https://github.com/leontedev/Locally)
 [![Twitter](https://img.shields.io/badge/Twitter-@leonte_dev-blue.svg?style=flat)](https://twitter.com/leonte_dev)
@@ -13,6 +13,10 @@
 [![Download App Store](./download.svg)](https://apps.apple.com/ro/app/locally-navigation-companion/id1488488997)
 
 ![](onboard_s.png) ![](main_s.png) ![](add_s.png) ![](settings_s.png)
+
+## Version 1.3 (in progress)
+- Context Menu for locations (show on map, edit name & delete)
+- Accessibility improvements for VoiceOver
 
 ## Version 1.2
 - Improved Marker redrawing for current location updates (redraws only when necessary)
