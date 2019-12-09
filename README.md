@@ -40,4 +40,4 @@ The app monitors "SignificantLocationChanges" to preserve battery life. However 
 - CoreData
 - CloudKit
 
-*Check the [Projects tab](https://github.com/leontedev/Locally/projects) for upcoming features.*
+*Check the [Projects tab](https://github.com/leontedev/Locally/projects) for upcoming features. Open a new issue to request features or submit a defect.*
