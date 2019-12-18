@@ -17,6 +17,7 @@
 ## Version 1.3 (in progress)
 - Context Menu for locations (show on map, edit name & delete)
 - Accessibility improvements for VoiceOver
+- Haptic feedback for map changes
 
 ## Version 1.2
 - Improved Marker redrawing for current location updates (redraws only when necessary)
@@ -39,5 +40,6 @@ The app monitors "SignificantLocationChanges" to preserve battery life. However 
 - MapKit & CoreLocation
 - CoreData
 - CloudKit
+- CoreHaptics
 
 *Check the [Projects tab](https://github.com/leontedev/Locally/projects) for upcoming features. Open a new issue to request features or submit a defect.*

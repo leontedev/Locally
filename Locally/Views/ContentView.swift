@@ -55,6 +55,7 @@ struct ContentView: View {
                                 
                                 // MARK: Settings Button
                                 Button(action: {
+                                    //self.hapticSuccess()
                                     self.showSettingsSheet = true
                                 }) {
                                     Image(systemName: "gear").font(Font.body.weight(.heavy))
@@ -76,6 +77,7 @@ struct ContentView: View {
                                 Button(action: {
                                     self.mapState = .currentLocation
                                     self.locationManager.preciseLocationUpdateBurst()
+                                    self.hapticSuccess()
                                 }) {
                                     Image(systemName: "location.north.fill").font(Font.body.weight(.heavy))
                                         .accentColor(Color.init("TextAccentColor"))
@@ -157,6 +159,7 @@ struct ContentView: View {
                                 .shadow(radius: 1)
                                 .onTapGesture {
                                     self.showOnMap(location: location)
+                                    self.hapticSuccess()
                                 }
                                 .contextMenu {
                                     Button(action: {
@@ -259,6 +262,11 @@ struct ContentView: View {
     
     func showOnMap(location: Location) {
         self.mapState = .savedLocation(location)
+    }
+    
+    func hapticSuccess() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
     }
 }
 

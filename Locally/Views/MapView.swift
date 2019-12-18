@@ -79,10 +79,12 @@ struct MapView: UIViewRepresentable {
             //Now use this coordinate to add annotation on map.
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
-            annotation.title = "Custom Location"
+            annotation.title = "New Location"
             annotation.subtitle = postalAddress
 
             view.addAnnotation(annotation)
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
             //view.selectAnnotation(annotation, animated: false)
             
         case .savedLocation(let location):
