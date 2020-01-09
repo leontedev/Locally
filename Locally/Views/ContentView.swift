@@ -140,10 +140,15 @@ struct ContentView: View {
                                             .padding(.leading, 15)
                                             .foregroundColor(Color.init("TextNameColor"))
 
-                                        Text(location.address ?? "")
+                                        Text(String(location.address?.components(separatedBy: "\n")[0] ?? ""))
                                             .font(.caption)
                                             .foregroundColor(Color.gray)
                                             .padding(.leading, 15)
+                                        
+                                        Text("Visits: 0")
+                                            .font(.caption)
+                                            .padding(.leading, 15)
+                                            .padding(.top, 5)
                                     }
 
                                     Spacer()
