@@ -106,6 +106,31 @@ class Settings: ObservableObject {
         }
     }
     
+    var transitTypeGoogle: String {
+        switch transitType {
+            case 0:
+            return "driving"
+            case 1:
+            return "transit"
+            case 2:
+            return "walking"
+            default:
+            return "driving"
+        }
+    }
+    
+    var transitTypeApple: String {
+        switch transitType {
+            case 0:
+                return "d"
+            case 1:
+                return "r"
+            case 2:
+                return "w"
+            default:
+                return "d"
+        }
+    }
     
     init() {
         let decoder = JSONDecoder()

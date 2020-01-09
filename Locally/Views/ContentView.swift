@@ -183,6 +183,64 @@ struct ContentView: View {
                                             .environment(\.managedObjectContext, self.moc)
                                     }
                                     
+                                    
+                                    Button(action: {
+                                        UIApplication.shared.open(URL(string: "http://maps.apple.com/?daddr=\(location.latitude),\(location.longitude)&dirflg=\(self.settings.transitTypeApple)")!)
+                                    }) {
+                                        HStack {
+                                            Text("Apple Maps")
+                                            Image(systemName: "paperplane.fill")
+                                        }
+                                    }
+                                    
+                                    
+                                    if (UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!)) {
+                                        Button(action: {
+                                            UIApplication.shared.open(URL(string: "https://www.google.com/maps/dir/?api=1&destination=\(location.latitude),\(location.longitude)&travelmode=\(self.settings.transitTypeGoogle)")!)
+                                        }) {
+                                            HStack {
+                                                Text("Google Maps")
+                                                Image(systemName: "paperplane.fill")
+                                            }
+                                        }
+                                    }
+                                    
+                                    
+                                    if (UIApplication.shared.canOpenURL(URL(string: "waze://")!)) {
+                                        Button(action: {
+                                            UIApplication.shared.open(URL(string: "waze://?ll=\(location.latitude),\(location.longitude)&navigate=yes&zoom=17")!)
+                                        }) {
+                                            HStack {
+                                                Text("Waze")
+                                                Image(systemName: "paperplane.fill")
+                                            }
+                                        }
+                                    }
+                                    
+                                    if (UIApplication.shared.canOpenURL(URL(string: "uber://")!)) {
+                                        Button(action: {
+                                            UIApplication.shared.open(URL(string: "uber://?action=setPickup&dropoff[latitude]=\(location.latitude)&dropoff[longitude]=\(location.longitude)")!)
+                                        }) {
+                                            HStack {
+                                                Text("Uber")
+                                                Image(systemName: "paperplane.fill")
+                                            }
+                                        }
+                                    }
+                                    
+                                    if (UIApplication.shared.canOpenURL(URL(string: "lyft://")!)) {
+                                        Button(action: {
+                                            UIApplication.shared.open(URL(string: "lyft://ridetype?id=lyft&destination[latitude]=\(location.latitude)&destination[longitude]=\(location.longitude)")!)
+                                        }) {
+                                            HStack {
+                                                Text("Lyft")
+                                                Image(systemName: "paperplane.fill")
+                                            }
+                                        }
+                                    }
+                                    
+                                    
+                                            
                                     Button(action: {
                                         self.removeItem(item: location)
                                     }) {
