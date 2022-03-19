@@ -13,21 +13,22 @@ struct EditLocation: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var name = ""
     @State private var showAlert = false
-    var location: Location
+    @Binding var location: Location?
     
     var body: some View {
         NavigationView {
             Form {
-                AutoFocusTextField(text: $name, placeholder: location.name!)
+                AutoFocusTextField(text: $name, placeholder: location!.name!)
             }
             .navigationBarTitle("Edit Name")
             .navigationBarItems(trailing: Button("Save") {
-                self.location.name = self.name
+                self.location!.name = self.name
                 if self.moc.hasChanges {
                     try? self.moc.save()
                 }
                 self.presentationMode.wrappedValue.dismiss()
-            }.disabled(name.isEmpty))
+            }
+            .disabled(name.isEmpty))
         }
     }
 }

@@ -20,6 +20,7 @@ struct ContentView: View {
     @State private var showAddSheet = false
     @State private var showSettingsSheet = false
     @State private var showEditSheet = false
+    @State private var selectedLocation: Location?
     @State private var type = 0
     
     @State private var onboardingTapsCounter = 0
@@ -98,16 +99,7 @@ struct ContentView: View {
                                 })
                                 .shadow(radius: 6)
                                 .offset(x: reader.size.width / 3, y: reader.size.height / 5)
-                                
-                            
-                            // MARK: Detail Location View
-//                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-//                                .fill(Color.init("CellColor"))
-//                                .frame(width: reader.size.width / 2, height: reader.size.width / 1.5)
-//                                .offset(x: reader.size.width / 5)
                         }
-
-                        Divider()
 
                         if self.locations.isEmpty {
                             Text("No Locations Saved")
@@ -116,8 +108,6 @@ struct ContentView: View {
                                 .padding(.top, 40.0)
                         }
 
-                        // Transit parameters are available just for Google Maps and Apple Maps (don't display the Picker for the rest)
-                        // FIXME: Accessibility for the Picker control
                         if (self.settings.isEnabledAppleMaps || self.settings.isEnabledGoogleMaps) && !self.locations.isEmpty {
                             Picker(selection: self.$settings.transitType, label: Text("Select Navigation Type")) {
                                     Image(systemName: "car.fill").tag(0)
@@ -139,16 +129,15 @@ struct ContentView: View {
                                             .font(.headline)
                                             .padding(.leading, 15)
                                             .foregroundColor(Color.init("TextNameColor"))
+                                            .lineLimit(1)
 
                                         Text(String(location.address?.components(separatedBy: "\n")[0] ?? ""))
                                             .font(.caption)
                                             .foregroundColor(Color.gray)
                                             .padding(.leading, 15)
-                                        
-                                        Text("Visits: 0")
-                                            .font(.caption)
-                                            .padding(.leading, 15)
-                                            .padding(.top, 5)
+                                            .lineLimit(2)
+
+                                        Spacer()
                                     }
 
                                     Spacer()
@@ -158,15 +147,6 @@ struct ContentView: View {
                                         latitude: location.latitude ,
                                         longitude: location.longitude
                                     )
-                                }
-                                .padding(5)
-                                .background(Color.init("CellColor"))
-                                .cornerRadius(16)
-                                .clipped()
-                                .shadow(radius: 1)
-                                .onTapGesture {
-                                    self.showOnMap(location: location)
-                                    self.hapticSuccess()
                                 }
                                 .contextMenu {
                                     Button(action: {
@@ -179,18 +159,15 @@ struct ContentView: View {
                                     }
                                     
                                     Button(action: {
+                                        self.selectedLocation = location
                                         self.showEditSheet = true
                                     }) {
                                         HStack {
                                             Text("Edit Name")
                                             Image(systemName: "pencil")
                                         }
-                                    }.sheet(isPresented: self.$showEditSheet) {
-                                        EditLocation(location: location)
-                                            .environment(\.managedObjectContext, self.moc)
                                     }
-                                    
-                                    
+
                                     Button(action: {
                                         UIApplication.shared.open(URL(string: "http://maps.apple.com/?daddr=\(location.latitude),\(location.longitude)&dirflg=\(self.settings.transitTypeApple)")!)
                                     }) {
@@ -199,8 +176,7 @@ struct ContentView: View {
                                             Image(systemName: "paperplane.fill")
                                         }
                                     }
-                                    
-                                    
+
                                     if (UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!)) {
                                         Button(action: {
                                             UIApplication.shared.open(URL(string: "https://www.google.com/maps/dir/?api=1&destination=\(location.latitude),\(location.longitude)&travelmode=\(self.settings.transitTypeGoogle)")!)
@@ -211,8 +187,7 @@ struct ContentView: View {
                                             }
                                         }
                                     }
-                                    
-                                    
+
                                     if (UIApplication.shared.canOpenURL(URL(string: "waze://")!)) {
                                         Button(action: {
                                             UIApplication.shared.open(URL(string: "waze://?ll=\(location.latitude),\(location.longitude)&navigate=yes&zoom=17")!)
@@ -245,61 +220,34 @@ struct ContentView: View {
                                             }
                                         }
                                     }
-                                    
-                                    
                                             
-                                    Button(action: {
-                                        self.removeItem(item: location)
-                                    }) {
+                                    Button(action: { self.removeItem(item: location) }) {
                                         HStack {
                                             Text("Delete")
                                             Image(systemName: "trash")
                                         }
                                     }.foregroundColor(.red)
                                 }
+                                .sheet(isPresented: $showEditSheet) {
+                                    EditLocation(location: $selectedLocation)
+                                        .environment(\.managedObjectContext, self.moc)
+                                }
+                                .padding(5)
+                                .onTapGesture {
+                                    self.showOnMap(location: location)
+                                    self.hapticSuccess()
+                                }
                             }
                             .onDelete(perform: self.removeItems)
                             .buttonStyle(PlainButtonStyle())
-                        }.frame(maxWidth: reader.size.width)
-
-
+                        }
+                        .listStyle(.plain)
                     }
                     .onAppear {
                         self.locationManager.startUpdating()
-
-                        // To remove only extra separators below the list:
-                        UITableView.appearance().tableFooterView = UIView()
-                        // To remove all separators including the actual ones:
-                        UITableView.appearance().separatorStyle = .none
-                        //UINavigationBar.appearance().backgroundColor = UIColor(named: "TextNameColor")
-                        //UINavigationBar.appearance().titleTextAttributes = [.foregroundColor : UIColor(named: "TextNameColor")]
-                        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.init(named: "TextNameColor") ?? UIColor.blue]
-
                         UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.init(named: "TextNameColor") ?? UIColor.blue], for: .selected)
                         UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.init(named: "TextNameColor") ?? UIColor.blue], for: .normal)
-
-
-                        var runCount: Int = UserDefaults.standard.integer(forKey: "applicationRunsCount")
-                        runCount += 1
-                        UserDefaults.standard.set(runCount, forKey: "applicationRunsCount")
-
-                        let infoDictionaryKey = kCFBundleVersionKey as String
-                        guard let currentVersion = Bundle.main.object(forInfoDictionaryKey: infoDictionaryKey) as? String
-                            else { fatalError("Expected to find a bundle version in the info dictionary") }
-
-                        let lastVersionPromptedForReview = UserDefaults.standard.string(forKey: "lastVersionPromptedForReviewKey")
-
-                        if runCount >= 5 && currentVersion != lastVersionPromptedForReview {
-                            let twoSecondsFromNow = DispatchTime.now() + 2.0
-
-                            DispatchQueue.main.asyncAfter(deadline: twoSecondsFromNow) {
-                                SKStoreReviewController.requestReview()
-                                UserDefaults.standard.set(currentVersion, forKey: "lastVersionPromptedForReviewKey")
-                            }
-                        }
-
                     }
-                    .frame(maxWidth: reader.size.width)
                     .edgesIgnoringSafeArea(.all)
 
                 })
@@ -359,7 +307,6 @@ struct AddButton: View {
             .cornerRadius(10)
             .padding()
         }.accessibility(label: Text("Save Marker's Location"))
-        
     }
 }
 
@@ -389,7 +336,6 @@ struct NavigationMenu: View {
     private let googleMapsTypes = ["driving", "transit", "walking"]
     private let appleMapsTypes = ["d", "r", "w"]
     private let buttonLabels = ["Go", "Google Maps", " Maps", "Waze", "Uber", "Lyft"]
-    
 
     @ViewBuilder var body: some View {
         HStack {
@@ -397,8 +343,6 @@ struct NavigationMenu: View {
                 NavigationButton(name: settings.enabledCount > 1 ? buttonLabels[1] : buttonLabels[0], urlString: "https://www.google.com/maps/dir/?api=1&destination=\(latitude),\(longitude)&travelmode=\(self.googleMapsTypes[self.settings.transitType])")
                 
             }
-            //"comgooglemaps://?daddr=\(latitude),\(longitude)&directionsmode=\(self.googleMapsTypes[self.settings.transitType])"
-            
             
             if settings.isEnabledAppleMaps {
                 NavigationButton(name: settings.enabledCount > 1 ? buttonLabels[2] : buttonLabels[0], urlString: "http://maps.apple.com/?daddr=\(latitude),\(longitude)&dirflg=\(self.appleMapsTypes[self.settings.transitType])")
@@ -419,5 +363,3 @@ struct NavigationMenu: View {
         
     }
 }
-
-

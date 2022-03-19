@@ -53,9 +53,3 @@ struct AddLocation: View {
         
     }
 }
-
-//struct AddLocation_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddLocation(locations: Locations(), currentLocation: nil)
-//    }
-//}
