@@ -88,7 +88,7 @@ struct SettingsView: View {
                     }.padding(.vertical)
                 }
                 .sheet(isPresented: $showShareSheet) {
-                ShareSheet(activityItems: [self.locationManager.lastKnownDescription, "\nLat: \(self.locationManager.lastKnownLocation?.coordinate.latitude ?? 0)\nLong: \(self.locationManager.lastKnownLocation?.coordinate.longitude ?? 0)"])}
+                    ShareSheet(activityItems: [self.locationManager.lastKnownDescription ?? "", "\nLat: \(self.locationManager.lastKnownLocation?.coordinate.latitude ?? 0)\nLong: \(self.locationManager.lastKnownLocation?.coordinate.longitude ?? 0)"])}
                 
                 
                 Section {

@@ -153,9 +153,11 @@ struct ContentView: View {
 
                                     Spacer()
 
-                                    NavigationMenu(settings: self.settings,
-                                                   latitude: location.latitude ?? 0,
-                                                   longitude: location.longitude ?? 0)
+                                    NavigationMenu(
+                                        settings: self.settings,
+                                        latitude: location.latitude ,
+                                        longitude: location.longitude
+                                    )
                                 }
                                 .padding(5)
                                 .background(Color.init("CellColor"))
