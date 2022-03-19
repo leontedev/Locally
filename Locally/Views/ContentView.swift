@@ -88,7 +88,7 @@ struct ContentView: View {
                                 .accessibility(label: Text("Place Marker on Current Location"))
                             }
                             .cornerRadius(10)
-                            .offset(x: -reader.size.width / 2.6, y: -reader.size.height / 7.5)
+                            .offset(x: reader.size.width / 2.6, y: -reader.size.height / 8.5)
 
 
                             // MARK: Save button
